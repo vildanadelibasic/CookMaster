@@ -1,0 +1,166 @@
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="section-title">My Favorite Recipes</h2>
+            <p class="text-muted">Your personal collection of saved recipes</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="alert alert-info">
+                <i class="fas fa-heart"></i> You have <strong>4</strong> recipes in your favorites
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        
+        <div class="col-md-4 mb-4">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop" class="card-img-top" alt="Pizza">
+                <div class="card-body">
+                    <h5 class="card-title">Classic Margherita Pizza</h5>
+                    <p class="card-text">Authentic Italian pizza with fresh mozzarella, basil, and tomato sauce.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 30 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 1.2k
+                        </span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="loadRecipeDetails(1)">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="removeFavorite(this)">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop" class="card-img-top" alt="Pasta">
+                <div class="card-body">
+                    <h5 class="card-title">Creamy Carbonara</h5>
+                    <p class="card-text">Rich and creamy pasta with bacon, eggs, and parmesan.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 25 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 2.1k
+                        </span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="loadRecipeDetails(2)">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="removeFavorite(this)">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop" class="card-img-top" alt="Dessert">
+                <div class="card-body">
+                    <h5 class="card-title">Chocolate Lava Cake</h5>
+                    <p class="card-text">Decadent chocolate cake with molten center.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 45 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Hard
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 3.2k
+                        </span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="loadRecipeDetails(2)">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="removeFavorite(this)">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="fas fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop" class="card-img-top" alt="Burger">
+                <div class="card-body">
+                    <h5 class="card-title">Gourmet Beef Burger</h5>
+                    <p class="card-text">Juicy beef patty with caramelized onions and special sauce.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 35 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 1.8k
+                        </span>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="loadRecipeDetails(2)">
+                            <i class="fas fa-eye"></i> View Details
+                        </button>
+                        <button class="btn btn-outline-danger" onclick="removeFavorite(this)">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-none" id="emptyState">
+        <div class="col-md-12">
+            <div class="text-center py-5">
+                <i class="fas fa-heart-broken fa-5x text-muted mb-3"></i>
+                <h3>No favorites yet</h3>
+                <p class="text-muted">Start exploring recipes and add your favorites!</p>
+                <button class="btn btn-primary" onclick="showView('recipes')">
+                    <i class="fas fa-search"></i> Browse Recipes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

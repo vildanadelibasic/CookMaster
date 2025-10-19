@@ -1,0 +1,308 @@
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="section-title">All Recipes</h2>
+            <p class="text-muted">Explore our collection of delicious recipes from around the world</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                <input type="text" id="searchInput" class="form-control" placeholder="Search recipes..." onkeyup="filterRecipes()">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <select id="categoryFilter" class="form-control" onchange="filterRecipes()">
+                <option value="all">All Categories</option>
+                <option value="breakfast">Breakfast</option>
+                <option value="lunch">Lunch</option>
+                <option value="dinner">Dinner</option>
+                <option value="dessert">Dessert</option>
+                <option value="snacks">Snacks</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <p class="text-muted" id="resultsCount">Showing all recipes</p>
+        </div>
+    </div>
+
+    <div class="row" id="recipesContainer">
+        
+        <div class="col-md-4 mb-4 recipe-item" data-title="classic margherita pizza" data-category="dinner" data-difficulty="medium">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop" class="card-img-top" alt="Pizza">
+                <div class="card-body">
+                    <h5 class="card-title">Classic Margherita Pizza</h5>
+                    <p class="card-text">Authentic Italian pizza with fresh mozzarella, basil, and tomato sauce.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 30 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 1.2k
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(1)">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="fresh garden salad" data-category="lunch" data-difficulty="easy">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" class="card-img-top" alt="Salad">
+                <div class="card-body">
+                    <h5 class="card-title">Fresh Garden Salad</h5>
+                    <p class="card-text">Crispy vegetables with homemade vinaigrette dressing.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 15 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Easy
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 890
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(4)">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="creamy carbonara" data-category="dinner" data-difficulty="medium">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop" class="card-img-top" alt="Pasta">
+                <div class="card-body">
+                    <h5 class="card-title">Creamy Carbonara</h5>
+                    <p class="card-text">Rich and creamy pasta with bacon, eggs, and parmesan.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 25 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 2.1k
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(2)">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="buddha bowl" data-category="lunch" data-difficulty="medium">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop" class="card-img-top" alt="Salad Bowl">
+                <div class="card-body">
+                    <h5 class="card-title">Buddha Bowl</h5>
+                    <p class="card-text">Nutritious bowl with quinoa, roasted vegetables, and tahini.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 40 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 756
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="gourmet beef burger" data-category="dinner" data-difficulty="medium">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop" class="card-img-top" alt="Burger">
+                <div class="card-body">
+                    <h5 class="card-title">Gourmet Beef Burger</h5>
+                    <p class="card-text">Juicy beef patty with caramelized onions and special sauce.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 35 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Medium
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 1.8k
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="chocolate lava cake" data-category="dessert" data-difficulty="hard">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop" class="card-img-top" alt="Dessert">
+                <div class="card-body">
+                    <h5 class="card-title">Chocolate Lava Cake</h5>
+                    <p class="card-text">Decadent chocolate cake with molten center.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 45 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Hard
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 3.2k
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(3)">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="california roll sushi" data-category="dinner" data-difficulty="hard">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=300&fit=crop" class="card-img-top" alt="Sushi">
+                <div class="card-body">
+                    <h5 class="card-title">California Roll Sushi</h5>
+                    <p class="card-text">Fresh sushi rolls with crab, avocado, and cucumber.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 50 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Hard
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 1.5k
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="creamy tomato soup" data-category="lunch" data-difficulty="easy">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop" class="card-img-top" alt="Soup">
+                <div class="card-body">
+                    <h5 class="card-title">Creamy Tomato Soup</h5>
+                    <p class="card-text">Comforting tomato soup with fresh herbs and cream.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 30 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Easy
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 945
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4 recipe-item" data-title="grilled chicken breast" data-category="dinner" data-difficulty="easy">
+            <div class="card recipe-card">
+                <button class="favorite-btn" onclick="toggleFavorite(this)">
+                    <i class="far fa-heart"></i>
+                </button>
+                <span class="badge bg-success">Approved</span>
+                <img src="https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop" class="card-img-top" alt="Chicken">
+                <div class="card-body">
+                    <h5 class="card-title">Grilled Chicken Breast</h5>
+                    <p class="card-text">Perfectly seasoned and grilled chicken with herbs.</p>
+                    <div class="recipe-meta mb-3">
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-clock"></i> 35 min
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-fire"></i> Easy
+                        </span>
+                        <span class="recipe-meta-item">
+                            <i class="fas fa-heart"></i> 1.1k
+                        </span>
+                    </div>
+                    <button class="btn btn-primary w-100">
+                        <i class="fas fa-eye"></i> View Details
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#"><i class="fas fa-chevron-left"></i></a>
+                    </li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,5 @@
+<?php
+// This file ensures the dao directory is tracked by git
+// Data Access Objects for database operations will be placed here
+?>
+

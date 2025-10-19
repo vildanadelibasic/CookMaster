@@ -1,0 +1,36 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build files
+dist/
+build/
+*.min.js
+*.min.css
+
+# Environment files
+.env
+.env.local
+
+# Node modules (if using npm)
+node_modules/
+
+# Uploads (if adding backend later)
+uploads/*
+!uploads/.gitkeep

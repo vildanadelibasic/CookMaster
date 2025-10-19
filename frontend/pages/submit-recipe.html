@@ -1,0 +1,128 @@
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <i class="fas fa-plus-circle fa-4x text-primary mb-3"></i>
+                        <h2 class="card-title">Submit a New Recipe</h2>
+                        <p class="text-muted">Share your culinary creation with the CookMaster community!</p>
+                    </div>
+
+                    <form id="recipeForm">
+                        
+                        <div class="mb-4">
+                            <label for="recipeTitle" class="form-label">
+                                <i class="fas fa-utensils"></i> Recipe Title *
+                            </label>
+                            <input type="text" class="form-control" id="recipeTitle" 
+                                   placeholder="e.g., Grandma's Famous Chocolate Cake" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeCategory" class="form-label">
+                                <i class="fas fa-tag"></i> Category *
+                            </label>
+                            <select class="form-control" id="recipeCategory" required>
+                                <option value="">Select a category</option>
+                                <option value="breakfast">Breakfast</option>
+                                <option value="lunch">Lunch</option>
+                                <option value="dinner">Dinner</option>
+                                <option value="dessert">Dessert</option>
+                                <option value="snacks">Snacks</option>
+                                <option value="beverages">Beverages</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeDifficulty" class="form-label">
+                                <i class="fas fa-fire"></i> Difficulty Level *
+                            </label>
+                            <select class="form-control" id="recipeDifficulty" required>
+                                <option value="">Select difficulty</option>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="prepTime" class="form-label">
+                                <i class="fas fa-clock"></i> Preparation Time (minutes) *
+                            </label>
+                            <input type="number" class="form-control" id="prepTime" 
+                                   placeholder="e.g., 30" min="1" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="servings" class="form-label">
+                                <i class="fas fa-users"></i> Servings *
+                            </label>
+                            <input type="number" class="form-control" id="servings" 
+                                   placeholder="e.g., 4" min="1" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeDescription" class="form-label">
+                                <i class="fas fa-align-left"></i> Description *
+                            </label>
+                            <textarea class="form-control" id="recipeDescription" rows="4" 
+                                      placeholder="Provide a brief description of your recipe..." required></textarea>
+                            <small class="form-text text-muted">Give readers an overview of what makes your recipe special</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeIngredients" class="form-label">
+                                <i class="fas fa-list"></i> Ingredients *
+                            </label>
+                            <textarea class="form-control" id="recipeIngredients" rows="6" 
+                                      placeholder="Enter ingredients, one per line:&#10;- 2 cups all-purpose flour&#10;- 1 cup sugar&#10;- 3 eggs..." required></textarea>
+                            <small class="form-text text-muted">List each ingredient on a new line with quantity</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeInstructions" class="form-label">
+                                <i class="fas fa-clipboard-list"></i> Instructions *
+                            </label>
+                            <textarea class="form-control" id="recipeInstructions" rows="8" 
+                                      placeholder="Enter step-by-step instructions:&#10;1. Preheat oven to 350°F&#10;2. Mix dry ingredients&#10;3. Add wet ingredients..." required></textarea>
+                            <small class="form-text text-muted">Provide clear, step-by-step instructions</small>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeImage" class="form-label">
+                                <i class="fas fa-image"></i> Recipe Image
+                            </label>
+                            <input type="file" class="form-control" id="recipeImage" accept="image/*">
+                            <small class="form-text text-muted">Upload an appetizing photo of your dish (JPG, PNG, or GIF)</small>
+
+                            <div id="imagePreview" class="mt-3"></div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="recipeTips" class="form-label">
+                                <i class="fas fa-lightbulb"></i> Tips & Notes (Optional)
+                            </label>
+                            <textarea class="form-control" id="recipeTips" rows="3" 
+                                      placeholder="Share any helpful tips, substitutions, or variations..."></textarea>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-5">
+                                <i class="fas fa-paper-plane"></i> Submit Recipe
+                            </button>
+                        </div>
+
+                        <div class="alert alert-info mt-4">
+                            <i class="fas fa-info-circle"></i> 
+                            <strong>Note:</strong> Your recipe will be reviewed by our moderators before being published. 
+                            You'll be notified once it's approved!
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

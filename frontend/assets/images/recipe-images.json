@@ -1,0 +1,86 @@
+{
+  "recipes": {
+    "pizza": {
+      "id": 1,
+      "name": "Classic Margherita Pizza",
+      "thumbnail": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=500&fit=crop",
+      "category": "dinner"
+    },
+    "carbonara": {
+      "id": 2,
+      "name": "Creamy Carbonara",
+      "thumbnail": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=800&h=500&fit=crop",
+      "category": "dinner"
+    },
+    "chocolate-cake": {
+      "id": 3,
+      "name": "Chocolate Lava Cake",
+      "thumbnail": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=800&h=500&fit=crop",
+      "category": "dessert"
+    },
+    "salad": {
+      "id": 4,
+      "name": "Fresh Garden Salad",
+      "thumbnail": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&h=500&fit=crop",
+      "category": "lunch"
+    },
+    "burger": {
+      "id": 5,
+      "name": "Gourmet Beef Burger",
+      "thumbnail": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800&h=500&fit=crop",
+      "category": "dinner"
+    },
+    "buddha-bowl": {
+      "id": 6,
+      "name": "Buddha Bowl",
+      "thumbnail": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=800&h=500&fit=crop",
+      "category": "lunch"
+    },
+    "sushi": {
+      "id": 7,
+      "name": "California Roll Sushi",
+      "thumbnail": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=800&h=500&fit=crop",
+      "category": "dinner"
+    },
+    "tomato-soup": {
+      "id": 8,
+      "name": "Creamy Tomato Soup",
+      "thumbnail": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=800&h=500&fit=crop",
+      "category": "lunch"
+    },
+    "chicken": {
+      "id": 9,
+      "name": "Grilled Chicken Breast",
+      "thumbnail": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop",
+      "large": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=800&h=500&fit=crop",
+      "category": "dinner"
+    }
+  },
+  "categories": {
+    "breakfast": "https://images.unsplash.com/photo-1533089860892-a7c6f0a88666?w=400&h=300&fit=crop",
+    "lunch": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop",
+    "dinner": "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop",
+    "dessert": "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&h=300&fit=crop",
+    "snacks": "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=400&h=300&fit=crop"
+  },
+  "placeholders": {
+    "default": "https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&h=300&fit=crop",
+    "no-image": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=300&fit=crop"
+  },
+  "info": {
+    "source": "Unsplash - Free Stock Photos",
+    "license": "Unsplash License - Free for commercial use",
+    "website": "https://unsplash.com",
+    "note": "These are placeholder images for demo/presentation purposes. Replace with actual uploaded images when backend is implemented."
+  }
+}
+
+

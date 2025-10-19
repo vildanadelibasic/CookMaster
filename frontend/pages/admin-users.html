@@ -1,0 +1,417 @@
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h2 class="section-title">Manage Users</h2>
+            <p class="text-muted">View and manage all registered users</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h3><i class="fas fa-users"></i> 1,247</h3>
+                    <p class="mb-0">Total Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h3><i class="fas fa-user-check"></i> 1,198</h3>
+                    <p class="mb-0">Active Users</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h3><i class="fas fa-user-shield"></i> 8</h3>
+                    <p class="mb-0">Admins</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body text-center">
+                    <h3><i class="fas fa-user-times"></i> 41</h3>
+                    <p class="mb-0">Inactive</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="usersTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Joined</th>
+                                    <th>Recipes</th>
+                                    <th>Comments</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                <tr data-user-id="1">
+                                    <td>1</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-primary"></i>
+                                        <strong>Admin User</strong>
+                                    </td>
+                                    <td>admin@cookmaster.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-1" onchange="changeUserRole(1)">
+                                            <option value="user">User</option>
+                                            <option value="admin" selected>Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-01-15</td>
+                                    <td>42</td>
+                                    <td>158</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(1)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="2">
+                                    <td>2</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-success"></i>
+                                        <strong>Sarah Johnson</strong>
+                                    </td>
+                                    <td>sarah.j@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-2" onchange="changeUserRole(2)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-03-20</td>
+                                    <td>18</td>
+                                    <td>87</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(2)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="3">
+                                    <td>3</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-info"></i>
+                                        <strong>Mike Chen</strong>
+                                    </td>
+                                    <td>mike.chen@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-3" onchange="changeUserRole(3)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-05-10</td>
+                                    <td>12</td>
+                                    <td>45</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(3)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="4">
+                                    <td>4</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-warning"></i>
+                                        <strong>Emily Rodriguez</strong>
+                                    </td>
+                                    <td>emily.r@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-4" onchange="changeUserRole(4)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-06-15</td>
+                                    <td>25</td>
+                                    <td>102</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(4)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="5">
+                                    <td>5</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-danger"></i>
+                                        <strong>David Park</strong>
+                                    </td>
+                                    <td>david.park@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-5" onchange="changeUserRole(5)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-07-01</td>
+                                    <td>8</td>
+                                    <td>34</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(5)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="6">
+                                    <td>6</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-secondary"></i>
+                                        <strong>Lisa Thompson</strong>
+                                    </td>
+                                    <td>lisa.t@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-6" onchange="changeUserRole(6)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-08-12</td>
+                                    <td>15</td>
+                                    <td>67</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(6)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="7">
+                                    <td>7</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-primary"></i>
+                                        <strong>Alex Martinez</strong>
+                                    </td>
+                                    <td>alex.m@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-7" onchange="changeUserRole(7)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-09-05</td>
+                                    <td>6</td>
+                                    <td>29</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(7)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="8">
+                                    <td>8</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-info"></i>
+                                        <strong>Rachel Green</strong>
+                                    </td>
+                                    <td>rachel.g@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-8" onchange="changeUserRole(8)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-09-18</td>
+                                    <td>11</td>
+                                    <td>52</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(8)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="9">
+                                    <td>9</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-success"></i>
+                                        <strong>Tom Wilson</strong>
+                                    </td>
+                                    <td>tom.w@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-9" onchange="changeUserRole(9)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-10-01</td>
+                                    <td>4</td>
+                                    <td>18</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(9)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="10">
+                                    <td>10</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-warning"></i>
+                                        <strong>Yuki Tanaka</strong>
+                                    </td>
+                                    <td>yuki.t@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-10" onchange="changeUserRole(10)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-10-08</td>
+                                    <td>9</td>
+                                    <td>41</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(10)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="11">
+                                    <td>11</td>
+                                    <td>
+                                        <i class="fas fa-user-circle text-muted"></i>
+                                        <strong>John Doe</strong>
+                                    </td>
+                                    <td>john.doe@email.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-11" onchange="changeUserRole(11)">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-02-14</td>
+                                    <td>2</td>
+                                    <td>5</td>
+                                    <td><span class="badge bg-danger">Inactive</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(11)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr data-user-id="12">
+                                    <td>12</td>
+                                    <td>
+                                        <i class="fas fa-user-shield text-warning"></i>
+                                        <strong>Chef Gordon</strong>
+                                    </td>
+                                    <td>chef.gordon@cookmaster.com</td>
+                                    <td>
+                                        <select class="form-select form-select-sm" id="role-12" onchange="changeUserRole(12)">
+                                            <option value="user">User</option>
+                                            <option value="admin" selected>Admin</option>
+                                        </select>
+                                    </td>
+                                    <td>2024-01-20</td>
+                                    <td>87</td>
+                                    <td>245</td>
+                                    <td><span class="badge bg-success">Active</span></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-primary" title="View Profile">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deleteUser(12)" title="Delete User">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-download"></i> Export Users</h5>
+                    <p class="text-muted">Download user data in various formats</p>
+                    <button class="btn btn-success me-2">
+                        <i class="fas fa-file-excel"></i> Export to Excel
+                    </button>
+                    <button class="btn btn-primary me-2">
+                        <i class="fas fa-file-csv"></i> Export to CSV
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-file-pdf"></i> Export to PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
