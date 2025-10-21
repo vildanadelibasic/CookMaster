@@ -1,0 +1,149 @@
+
+<div class="container" id="recipe-details-container">
+    
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <button class="btn btn-outline-secondary" onclick="showView('recipes')">
+                <i class="fas fa-arrow-left"></i> Back to All Recipes
+            </button>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="recipe-title" id="recipeTitle">Classic Margherita Pizza</h1>
+            <div class="recipe-meta mb-3">
+                <span class="recipe-meta-item">
+                    <i class="fas fa-user"></i> <span id="recipeAuthor">Giovanni Rossi</span>
+                </span>
+                <span class="recipe-meta-item">
+                    <i class="fas fa-calendar"></i> <span id="recipeDate">October 10, 2025</span>
+                </span>
+                <span class="recipe-meta-item">
+                    <i class="fas fa-eye"></i> <span id="recipeViews">1,247</span> views
+                </span>
+            </div>
+        </div>
+        <div class="col-md-4 text-end">
+            <button class="btn btn-danger btn-lg mb-2 w-100" id="favoriteBtn" onclick="toggleRecipeFavorite()">
+                <i class="far fa-heart"></i> Add to Favorites
+            </button>
+            <div class="btn-group w-100" role="group">
+                <button class="btn btn-outline-primary" onclick="printRecipe()">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button class="btn btn-outline-success" onclick="shareRecipe()">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <img id="recipeImage" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=500&fit=crop" 
+                     class="card-img-top" alt="Recipe" style="height: 400px; object-fit: cover;">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle"></i> Quick Info</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong><i class="fas fa-clock text-primary"></i> Prep Time:</strong><br>
+                        <span id="recipePrepTime">30 minutes</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-users text-success"></i> Servings:</strong><br>
+                        <span id="recipeServings">4 people</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-fire text-warning"></i> Difficulty:</strong><br>
+                        <span class="badge bg-warning" id="recipeDifficulty">Medium</span>
+                    </div>
+                    <div class="mb-3">
+                        <strong><i class="fas fa-tag text-info"></i> Category:</strong><br>
+                        <span class="badge bg-info" id="recipeCategory">Dinner</span>
+                    </div>
+                    <div>
+                        <strong><i class="fas fa-heart text-danger"></i> Likes:</strong><br>
+                        <span id="recipeLikes">1,247</span> people loved this
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4><i class="fas fa-align-left"></i> Description</h4>
+                    <p id="recipeDescription" class="lead">
+                        Authentic Italian pizza with fresh mozzarella, basil, and tomato sauce.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-list"></i> Ingredients</h5>
+                </div>
+                <div class="card-body">
+                    <ul id="recipeIngredients" class="list-unstyled">
+                        <li><i class="fas fa-check text-success"></i> Loading...</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Instructions</h5>
+                </div>
+                <div class="card-body">
+                    <ol id="recipeInstructions">
+                        <li>Loading instructions...</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4" id="tipsSection">
+        <div class="col-md-12">
+            <div class="card border-warning">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Chef's Tips</h5>
+                </div>
+                <div class="card-body">
+                    <p id="recipeTips" class="mb-0"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-comments"></i> Comments</h5>
+                </div>
+                <div class="card-body">
+                    <div id="commentsList">
+                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

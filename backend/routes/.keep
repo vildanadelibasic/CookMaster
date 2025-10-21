@@ -1,0 +1,5 @@
+<?php
+// This file ensures the routes directory is tracked by git
+// FlightPHP route definitions will be placed here
+?>
+
