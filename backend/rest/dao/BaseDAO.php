@@ -1,0 +1,90 @@
+
+<?php
+require_once __DIR__ . '/../Config.class.php';
+
+class BaseDao {
+    protected $conn;
+    protected $table_name;
+    private $id_column;
+
+    public function __construct($table_name, $id_column) {
+        try {
+            $this->table_name = $table_name;
+            $this->id_column = $id_column;
+            $servername = Config::DB_HOST();
+            $username = Config::DB_USERNAME();
+            $password = Config::DB_PASSWORD();
+            $dbname = Config::DB_SCHEMA();
+            $port = Config::DB_PORT();
+            $options = array(
+                PDO::MYSQL_ATTR_SSL_CA => 'https://cloud.digitalocean.com/9558bfb6-8b04-40c4-a777-f370d81695d2',
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            );
+            $this->conn = new PDO("mysql:host=$servername;dbname=$dbname;port=$port", $username, $password, $options);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch(PDOException $e) {
+            echo "Connection failed: " . $e->getMessage();
+        }
+    }
+
+    public function get_all() {
+        $stmt = $this->conn->prepare("SELECT * FROM " . $this->table_name);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function get_by_id($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM " . $this->table_name . " WHERE " . $this->id_column . " = :id");
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function delete($id) {
+        $stmt = $this->conn->prepare("DELETE FROM " . $this->table_name . " WHERE " . $this->id_column . " = :id");
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+    }
+
+    public function update($entity, $id) {
+        $query = "UPDATE " . $this->table_name . " SET ";
+        foreach($entity as $column => $value) {
+            $query .= $column . "=:" . $column . ", ";
+        }
+        $query = substr($query, 0, -2);
+        $query .= " WHERE " . $this->id_column . " = :id";
+        $stmt = $this->conn->prepare($query);
+        $entity['id'] = $id;
+        $stmt->execute($entity);
+        return $entity;
+    }
+
+    public function add($entity) {
+        $query = "INSERT INTO " . $this->table_name . " (";
+        foreach($entity as $column => $value) {
+            $query .= $column . ', ';
+        }
+        $query = substr($query, 0, -2);
+        $query .= ") VALUES (";
+        foreach($entity as $column => $value) {
+            $query .= ":" . $column . ', ';
+        }
+        $query = substr($query, 0, -2);
+        $query .= ")";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($entity);
+        $entity['id'] = $this->conn->lastInsertId();
+        return $entity;
+    }
+
+    protected function query($query, $params) {
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    protected function query_unique($query, $params) {
+        $results = $this->query($query, $params);
+        return reset($results);
+    }
+}
+?>
