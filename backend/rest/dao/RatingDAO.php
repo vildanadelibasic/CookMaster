@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDAO.php';
+require_once __DIR__ . '/BaseDao.php';
 
 class RatingDao extends BaseDao {
     public function __construct() {
@@ -7,24 +7,51 @@ class RatingDao extends BaseDao {
     }
 
     public function add_rating($user_id, $recipe_id, $rating) {
-        return $this->add(['user_id' => $user_id, 'recipe_id' => $recipe_id, 'rating' => $rating]);
+        return $this->insert([
+            'user_id' => $user_id,
+            'recipe_id' => $recipe_id,
+            'rating' => $rating
+        ]);
     }
 
     public function get_all_ratings() {
-        return $this->get_all();
+        return $this->getAll();
     }
 
     public function get_rating_by_id($id) {
-        $result = $this->get_by_id($id);
-        return reset($result);
+        return $this->getById($id);
     }
 
     public function update_rating($id, $user_id, $recipe_id, $rating) {
-        return $this->update(['user_id' => $user_id, 'recipe_id' => $recipe_id, 'rating' => $rating], $id);
+        return $this->update($id, [
+            'user_id' => $user_id,
+            'recipe_id' => $recipe_id,
+            'rating' => $rating
+        ]);
     }
 
     public function delete_rating($id) {
         return $this->delete($id);
+    }
+
+    public function get_user_recipe_rating($user_id, $recipe_id) {
+        $stmt = $this->connection->prepare("
+            SELECT * FROM ratings 
+            WHERE user_id = :u AND recipe_id = :r
+        ");
+        $stmt->execute([
+            ':u' => $user_id,
+            ':r' => $recipe_id
+        ]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function get_by_user($user_id) {
+        $stmt = $this->connection->prepare("
+            SELECT * FROM ratings WHERE user_id = :u
+        ");
+        $stmt->execute([':u' => $user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

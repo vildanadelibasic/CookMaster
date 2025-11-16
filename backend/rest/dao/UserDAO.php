@@ -1,13 +1,13 @@
 <?php
-require_once __DIR__ . '/BaseDAO.php';
+require_once __DIR__ . '/BaseDao.php';
 
 class UserDao extends BaseDao {
     public function __construct() {
-        parent::__construct('users', 'userid');
+        parent::__construct('users', 'user_id');
     }
 
     public function add_user($name, $email, $password, $role = 'user', $status = 'active') {
-        return $this->add([
+        return $this->insert([
             'name' => $name,
             'email' => $email,
             'password' => $password,
@@ -17,22 +17,21 @@ class UserDao extends BaseDao {
     }
 
     public function get_all_users() {
-        return $this->get_all();
+        return $this->getAll();
     }
 
     public function get_user_by_id($id) {
-        $result = $this->get_by_id($id);
-        return reset($result);
+        return $this->getById($id);
     }
 
     public function update_user($id, $name, $email, $password, $role, $status) {
-        return $this->update([
+        return $this->update($id, [
             'name' => $name,
             'email' => $email,
             'password' => $password,
             'role' => $role,
             'status' => $status
-        ], $id);
+        ]);
     }
 
     public function delete_user($id) {
@@ -40,11 +39,7 @@ class UserDao extends BaseDao {
     }
 
     public function get_user_by_email($email) {
-        return $this->query("SELECT * FROM users WHERE email = :email", ['email' => $email]);
-    }
-
-    public function get_by_email($email) {
-        $stmt = $this->conn->prepare("SELECT * FROM " . $this->table_name . " WHERE email = :email");
+        $stmt = $this->connection->prepare("SELECT * FROM " . $this->table . " WHERE email = :email");
         $stmt->execute(['email' => $email]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

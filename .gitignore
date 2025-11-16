@@ -34,3 +34,5 @@ node_modules/
 # Uploads (if adding backend later)
 uploads/*
 !uploads/.gitkeep
+
+/backend/vendor/

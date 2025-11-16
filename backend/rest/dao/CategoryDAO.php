@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDAO.php';
+require_once __DIR__ . '/BaseDao.php';
 
 class CategoryDao extends BaseDao {
     public function __construct() {
@@ -7,20 +7,19 @@ class CategoryDao extends BaseDao {
     }
 
     public function add_category($name, $description) {
-        return $this->add(['name' => $name, 'description' => $description]);
+        return $this->insert(['name' => $name, 'description' => $description]);
     }
 
     public function get_all_categories() {
-        return $this->get_all();
+        return $this->getAll();
     }
 
     public function get_category_by_id($id) {
-        $result = $this->get_by_id($id);
-        return reset($result);
+        return $this->getById($id);
     }
 
     public function update_category($id, $name, $description) {
-        return $this->update(['name' => $name, 'description' => $description], $id);
+        return $this->update($id, ['name' => $name, 'description' => $description]);
     }
 
     public function delete_category($id) {
