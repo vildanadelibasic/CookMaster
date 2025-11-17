@@ -1,0 +1,19 @@
+{
+    "name": "user/cook-master",
+    "autoload": {
+        "psr-4": {
+            "User\\CookMaster\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "vildanadelibasic",
+            "email": "vildanadelibasic7@gmail.com"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^7.0",
+        "mikecao/flight": "^3.17",
+        "zircote/swagger-php": "^3.3"
+    }
+}

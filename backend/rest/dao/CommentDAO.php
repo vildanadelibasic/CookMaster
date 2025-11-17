@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDAO.php';
+require_once __DIR__ . '/BaseDao.php';
 
 class CommentDao extends BaseDao {
     public function __construct() {
@@ -7,7 +7,7 @@ class CommentDao extends BaseDao {
     }
 
     public function add_comment($user_id, $recipe_id, $content, $parent_id = null, $is_question = false) {
-        return $this->add([
+        return $this->insert([
             'user_id' => $user_id,
             'recipe_id' => $recipe_id,
             'parent_id' => $parent_id,
@@ -17,22 +17,21 @@ class CommentDao extends BaseDao {
     }
 
     public function get_all_comments() {
-        return $this->get_all();
+        return $this->getAll();
     }
 
     public function get_comment_by_id($id) {
-        $result = $this->get_by_id($id);
-        return reset($result);
+        return $this->getById($id);
     }
 
     public function update_comment($id, $user_id, $recipe_id, $content, $parent_id = null, $is_question = false) {
-        return $this->update([
+        return $this->update($id, [
             'user_id' => $user_id,
             'recipe_id' => $recipe_id,
-            'content' => $content,
             'parent_id' => $parent_id,
+            'content' => $content,
             'is_question' => $is_question
-        ], $id);
+        ]);
     }
 
     public function delete_comment($id) {

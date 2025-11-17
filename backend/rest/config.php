@@ -1,27 +1,22 @@
 <?php
 class Database {
-    private $host = "localhost";
-    private $db_name = "cook_master";
-    private $username = "root";
-    private $password = "";
-    private $conn;
+    private static $host = "localhost";
+    private static $db_name = "cook_master";
+    private static $username = "root";
+    private static $password = "";
 
-    public function connect() {
-        $this->conn = null;
-
+    public static function connect() {
         try {
-            $this->conn = new PDO(
-                "mysql:host=" . $this->host . ";dbname=" . $this->db_name,
-                $this->username,
-                $this->password
+            $conn = new PDO(
+                "mysql:host=" . self::$host . ";dbname=" . self::$db_name . ";charset=utf8mb4",
+                self::$username,
+                self::$password
             );
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conn->exec("set names utf8mb4");
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $conn;
         } catch (PDOException $e) {
-            echo "Greška u konekciji: " . $e->getMessage();
+            die("Greška u konekciji: " . $e->getMessage());
         }
-
-        return $this->conn;
     }
 }
 ?>
