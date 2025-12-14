@@ -1,6 +1,4 @@
-
 <div class="container" id="recipe-details-container">
-    
     <div class="row mb-3">
         <div class="col-md-12">
             <button class="btn btn-outline-secondary" onclick="showView('recipes')">
@@ -8,19 +6,15 @@
             </button>
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-8">
-            <h1 class="recipe-title" id="recipeTitle">Classic Margherita Pizza</h1>
+            <h1 class="recipe-title" id="recipeTitle">Loading...</h1>
             <div class="recipe-meta mb-3">
                 <span class="recipe-meta-item">
-                    <i class="fas fa-user"></i> <span id="recipeAuthor">Giovanni Rossi</span>
+                    <i class="fas fa-user"></i> <span id="recipeAuthor">Loading...</span>
                 </span>
                 <span class="recipe-meta-item">
-                    <i class="fas fa-calendar"></i> <span id="recipeDate">October 10, 2025</span>
-                </span>
-                <span class="recipe-meta-item">
-                    <i class="fas fa-eye"></i> <span id="recipeViews">1,247</span> views
+                    <i class="fas fa-calendar"></i> <span id="recipeDate">-</span>
                 </span>
             </div>
         </div>
@@ -38,12 +32,12 @@
             </div>
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-8">
             <div class="card">
-                <img id="recipeImage" src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&h=500&fit=crop" 
-                     class="card-img-top" alt="Recipe" style="height: 400px; object-fit: cover;">
+                <img id="recipeImage" src="https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&h=500&fit=crop" 
+                     class="card-img-top" alt="Recipe" style="height: 400px; object-fit: cover;"
+                     onerror="this.src='https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=800&h=500&fit=crop'">
             </div>
         </div>
         <div class="col-md-4">
@@ -54,42 +48,40 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <strong><i class="fas fa-clock text-primary"></i> Prep Time:</strong><br>
-                        <span id="recipePrepTime">30 minutes</span>
+                        <span id="recipePrepTime">-</span>
                     </div>
                     <div class="mb-3">
                         <strong><i class="fas fa-users text-success"></i> Servings:</strong><br>
-                        <span id="recipeServings">4 people</span>
+                        <span id="recipeServings">-</span>
                     </div>
                     <div class="mb-3">
                         <strong><i class="fas fa-fire text-warning"></i> Difficulty:</strong><br>
-                        <span class="badge bg-warning" id="recipeDifficulty">Medium</span>
+                        <span class="badge bg-warning" id="recipeDifficulty">-</span>
                     </div>
                     <div class="mb-3">
                         <strong><i class="fas fa-tag text-info"></i> Category:</strong><br>
-                        <span class="badge bg-info" id="recipeCategory">Dinner</span>
+                        <span class="badge bg-info" id="recipeCategory">-</span>
                     </div>
                     <div>
-                        <strong><i class="fas fa-heart text-danger"></i> Likes:</strong><br>
-                        <span id="recipeLikes">1,247</span> people loved this
+                        <strong><i class="fas fa-star text-warning"></i> Rating:</strong><br>
+                        <span id="recipeLikes">No ratings yet</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <h4><i class="fas fa-align-left"></i> Description</h4>
                     <p id="recipeDescription" class="lead">
-                        Authentic Italian pizza with fresh mozzarella, basil, and tomato sauce.
+                        Loading description...
                     </p>
                 </div>
             </div>
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-4">
             <div class="card h-100">
@@ -98,12 +90,11 @@
                 </div>
                 <div class="card-body">
                     <ul id="recipeIngredients" class="list-unstyled">
-                        <li><i class="fas fa-check text-success"></i> Loading...</li>
+                        <li><i class="fas fa-spinner fa-spin"></i> Loading...</li>
                     </ul>
                 </div>
             </div>
         </div>
-
         <div class="col-md-8">
             <div class="card h-100">
                 <div class="card-header bg-primary text-white">
@@ -117,33 +108,21 @@
             </div>
         </div>
     </div>
-
-    <div class="row mb-4" id="tipsSection">
-        <div class="col-md-12">
-            <div class="card border-warning">
-                <div class="card-header bg-warning">
-                    <h5 class="mb-0"><i class="fas fa-lightbulb"></i> Chef's Tips</h5>
-                </div>
-                <div class="card-body">
-                    <p id="recipeTips" class="mb-0"></p>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-comments"></i> Comments</h5>
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="fas fa-comments"></i> Comments & Discussion</h5>
                 </div>
                 <div class="card-body">
                     <div id="commentsList">
-                        <p class="text-muted">No comments yet. Be the first to comment!</p>
+                        <div class="text-center py-3">
+                            <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                            <p class="text-muted mt-2">Loading comments...</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="row mb-4">
         <div class="col-md-12">
@@ -6,42 +5,36 @@
             <p class="text-muted">Overview of CookMaster statistics and management</p>
         </div>
     </div>
-
     <div class="row mb-5">
-        
         <div class="col-md-3 mb-4">
             <div class="stat-card">
                 <i class="fas fa-users"></i>
-                <h2>1,247</h2>
+                <h2 class="stat-users">0</h2>
                 <p>Total Users</p>
             </div>
         </div>
-
         <div class="col-md-3 mb-4">
             <div class="stat-card warning">
                 <i class="fas fa-clock"></i>
-                <h2>23</h2>
+                <h2 class="stat-pending">0</h2>
                 <p>Pending Recipes</p>
             </div>
         </div>
-
         <div class="col-md-3 mb-4">
             <div class="stat-card success">
                 <i class="fas fa-book"></i>
-                <h2>586</h2>
-                <p>Approved Recipes</p>
+                <h2 class="stat-recipes">0</h2>
+                <p>Total Recipes</p>
             </div>
         </div>
-
         <div class="col-md-3 mb-4">
             <div class="stat-card secondary">
                 <i class="fas fa-comments"></i>
-                <h2>3,421</h2>
+                <h2 class="stat-comments">0</h2>
                 <p>Total Comments</p>
             </div>
         </div>
     </div>
-
     <div class="row mb-5">
         <div class="col-md-12 mb-3">
             <h4><i class="fas fa-bolt"></i> Quick Actions</h4>
@@ -65,13 +58,12 @@
             </button>
         </div>
         <div class="col-md-3 mb-3">
-            <button class="btn btn-warning w-100 py-3">
-                <i class="fas fa-chart-line fa-2x mb-2 d-block"></i>
-                View Reports
+            <button class="btn btn-warning w-100 py-3" onclick="showView('recipes')">
+                <i class="fas fa-book-open fa-2x mb-2 d-block"></i>
+                View All Recipes
             </button>
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-12 mb-3">
             <h4><i class="fas fa-history"></i> Recent Activity</h4>
@@ -80,7 +72,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-hover" id="recentActivityTable">
                             <thead>
                                 <tr>
                                     <th>Time</th>
@@ -90,41 +82,12 @@
                                     <th>Status</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="recentActivityBody">
                                 <tr>
-                                    <td><small>10 min ago</small></td>
-                                    <td>Sarah Johnson</td>
-                                    <td><i class="fas fa-plus-circle text-success"></i> New Recipe</td>
-                                    <td>Submitted "Vegan Tacos"</td>
-                                    <td><span class="badge bg-warning">Pending</span></td>
-                                </tr>
-                                <tr>
-                                    <td><small>25 min ago</small></td>
-                                    <td>Mike Chen</td>
-                                    <td><i class="fas fa-user-plus text-primary"></i> Registration</td>
-                                    <td>New user registered</td>
-                                    <td><span class="badge bg-success">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><small>1 hour ago</small></td>
-                                    <td>Emily Rodriguez</td>
-                                    <td><i class="fas fa-comment text-info"></i> Comment</td>
-                                    <td>Commented on "Chocolate Lava Cake"</td>
-                                    <td><span class="badge bg-success">Published</span></td>
-                                </tr>
-                                <tr>
-                                    <td><small>2 hours ago</small></td>
-                                    <td>David Park</td>
-                                    <td><i class="fas fa-heart text-danger"></i> Favorite</td>
-                                    <td>Added "Pizza Margherita" to favorites</td>
-                                    <td><span class="badge bg-info">Active</span></td>
-                                </tr>
-                                <tr>
-                                    <td><small>3 hours ago</small></td>
-                                    <td>Lisa Thompson</td>
-                                    <td><i class="fas fa-plus-circle text-success"></i> New Recipe</td>
-                                    <td>Submitted "Sourdough Bread"</td>
-                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td colspan="5" class="text-center py-3">
+                                        <i class="fas fa-spinner fa-spin text-primary"></i>
+                                        Loading recent activity...
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -133,55 +96,23 @@
             </div>
         </div>
     </div>
-
     <div class="row mb-4">
         <div class="col-md-6 mb-4">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-chart-pie"></i> Recipe Categories</h5>
-                    <div class="text-center py-4">
-                        <div class="mb-3">
-                            <span class="badge bg-primary me-2">Breakfast: 125</span>
-                            <span class="badge bg-success me-2">Lunch: 156</span>
-                            <span class="badge bg-warning me-2">Dinner: 189</span>
-                        </div>
-                        <div>
-                            <span class="badge bg-danger me-2">Dessert: 98</span>
-                            <span class="badge bg-info me-2">Snacks: 18</span>
-                        </div>
-                        <p class="text-muted mt-3 small">
-                            <i class="fas fa-info-circle"></i> Chart visualization would be integrated here
-                        </p>
+                    <div class="text-center py-4" id="categoryStats">
+                        <i class="fas fa-spinner fa-spin text-primary"></i>
+                        <p class="text-muted mt-2">Loading categories...</p>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="col-md-6 mb-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title"><i class="fas fa-chart-line"></i> User Growth</h5>
-                    <div class="text-center py-4">
-                        <h3 class="text-primary mb-2">+127</h3>
-                        <p class="text-muted">New users this month</p>
-                        <div class="progress" style="height: 25px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Growth</div>
-                        </div>
-                        <p class="text-muted mt-3 small">
-                            <i class="fas fa-info-circle"></i> Compared to last month
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-body">
                     <h5 class="card-title"><i class="fas fa-server"></i> System Health</h5>
-                    <div class="row text-center">
+                    <div class="row text-center py-3">
                         <div class="col-md-4">
                             <div class="mb-2">
                                 <i class="fas fa-check-circle fa-3x text-success"></i>
@@ -200,8 +131,8 @@
                             <div class="mb-2">
                                 <i class="fas fa-check-circle fa-3x text-success"></i>
                             </div>
-                            <h6>Storage</h6>
-                            <span class="badge bg-success">78% Available</span>
+                            <h6>Frontend</h6>
+                            <span class="badge bg-success">Active</span>
                         </div>
                     </div>
                 </div>
@@ -209,4 +140,3 @@
         </div>
     </div>
 </div>
-

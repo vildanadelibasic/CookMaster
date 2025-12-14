@@ -1,5 +1,3 @@
-
-
 :root {
     --primary-color: #ff6b6b;
     --secondary-color: #4ecdc4;
@@ -10,13 +8,11 @@
     --warning-color: #ffd43b;
     --danger-color: #ff6b6b;
 }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #fafafa;
@@ -24,20 +20,16 @@ body {
     display: flex;
     flex-direction: column;
 }
-
 main {
     flex: 1;
 }
-
 * {
     transition: all 0.3s ease;
 }
-
 .navbar {
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
     border-bottom: 3px solid var(--primary-color);
 }
-
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
@@ -46,25 +38,21 @@ main {
     align-items: center;
     gap: 0.5rem;
 }
-
 .brand-text {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
-
 .navbar-brand i {
     font-size: 1.8rem;
     animation: rotate 3s ease-in-out infinite;
 }
-
 @keyframes rotate {
     0%, 100% { transform: rotate(0deg); }
     25% { transform: rotate(-10deg); }
     75% { transform: rotate(10deg); }
 }
-
 .nav-link {
     color: var(--dark-color) !important;
     font-weight: 500;
@@ -72,18 +60,15 @@ main {
     border-radius: 8px;
     margin: 0 0.2rem;
 }
-
 .nav-link:hover {
     background-color: rgba(255, 107, 107, 0.1);
     color: var(--primary-color) !important;
     transform: translateY(-2px);
 }
-
 .nav-link.active {
     background-color: var(--primary-color);
     color: white !important;
 }
-
 .btn {
     border-radius: 8px;
     padding: 0.6rem 1.5rem;
@@ -91,48 +76,39 @@ main {
     border: none;
     cursor: pointer;
 }
-
 .btn-primary {
     background: linear-gradient(135deg, var(--primary-color), #ff8787);
     border: none;
 }
-
 .btn-primary:hover {
     background: linear-gradient(135deg, #ff5252, var(--primary-color));
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
 }
-
 .btn-success {
     background: linear-gradient(135deg, var(--success-color), #69db7c);
 }
-
 .btn-success:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(81, 207, 102, 0.3);
 }
-
 .btn-danger {
     background: linear-gradient(135deg, var(--danger-color), #ff8787);
 }
-
 .btn-danger:hover {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
 }
-
 .btn-outline-primary {
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
     background: transparent;
 }
-
 .btn-outline-primary:hover {
     background: var(--primary-color);
     color: white;
     transform: translateY(-2px);
 }
-
 .card {
     border: none;
     border-radius: 15px;
@@ -140,31 +116,25 @@ main {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
-
 .card-img-top {
     height: 200px;
     object-fit: cover;
 }
-
 .card-body {
     padding: 1.5rem;
 }
-
 .card-title {
     font-weight: bold;
     color: var(--dark-color);
     margin-bottom: 0.5rem;
 }
-
 .recipe-card {
     position: relative;
 }
-
 .recipe-card .badge {
     position: absolute;
     top: 10px;
@@ -173,7 +143,6 @@ main {
     padding: 0.5rem 1rem;
     font-size: 0.85rem;
 }
-
 .favorite-btn {
     position: absolute;
     top: 10px;
@@ -190,16 +159,13 @@ main {
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
-
 .favorite-btn:hover {
     transform: scale(1.1);
 }
-
 .favorite-btn i {
     font-size: 1.2rem;
     color: var(--danger-color);
 }
-
 .hero-section {
     background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
     color: white;
@@ -209,7 +175,6 @@ main {
     position: relative;
     overflow: hidden;
 }
-
 .hero-section::before {
     content: '';
     position: absolute;
@@ -220,30 +185,25 @@ main {
     background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/></svg>');
     animation: float 20s linear infinite;
 }
-
 @keyframes float {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 .hero-content {
     position: relative;
     z-index: 1;
 }
-
 .hero-section h1 {
     font-size: 3rem;
     font-weight: bold;
     margin-bottom: 1rem;
     animation: fadeInUp 1s ease;
 }
-
 .hero-section p {
     font-size: 1.3rem;
     margin-bottom: 2rem;
     animation: fadeInUp 1s ease 0.2s backwards;
 }
-
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -254,24 +214,20 @@ main {
         transform: translateY(0);
     }
 }
-
 .form-control {
     border-radius: 10px;
     border: 2px solid #e9ecef;
     padding: 0.75rem 1rem;
 }
-
 .form-control:focus {
     border-color: var(--primary-color);
     box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
 }
-
 .form-label {
     font-weight: 600;
     color: var(--dark-color);
     margin-bottom: 0.5rem;
 }
-
 .stat-card {
     background: linear-gradient(135deg, var(--primary-color), #ff8787);
     color: white;
@@ -279,69 +235,56 @@ main {
     padding: 2rem;
     text-align: center;
 }
-
 .stat-card.secondary {
     background: linear-gradient(135deg, var(--secondary-color), #6eddd6);
 }
-
 .stat-card.success {
     background: linear-gradient(135deg, var(--success-color), #69db7c);
 }
-
 .stat-card.warning {
     background: linear-gradient(135deg, var(--warning-color), #ffec99);
 }
-
 .stat-card i {
     font-size: 3rem;
     margin-bottom: 1rem;
 }
-
 .stat-card h2 {
     font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
 }
-
 .stat-card p {
     font-size: 1.1rem;
     opacity: 0.9;
 }
-
 .dataTables_wrapper .dataTables_filter input {
     border-radius: 10px;
     border: 2px solid #e9ecef;
     padding: 0.5rem 1rem;
 }
-
 .dataTables_wrapper .dataTables_length select {
     border-radius: 10px;
     border: 2px solid #e9ecef;
     padding: 0.5rem;
 }
-
 table.dataTable thead th {
     background: linear-gradient(135deg, var(--primary-color), #ff8787);
     color: white;
     border: none;
 }
-
 table.dataTable tbody tr:hover {
     background-color: rgba(255, 107, 107, 0.05);
 }
-
 .badge {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-weight: 600;
 }
-
 .footer {
     background: linear-gradient(135deg, #f8f9fa, #ffffff);
     border-top: 3px solid var(--primary-color);
     margin-top: 3rem;
 }
-
 .section-title {
     font-size: 2rem;
     font-weight: bold;
@@ -350,7 +293,6 @@ table.dataTable tbody tr:hover {
     position: relative;
     padding-bottom: 1rem;
 }
-
 .section-title::after {
     content: '';
     position: absolute;
@@ -361,7 +303,6 @@ table.dataTable tbody tr:hover {
     background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
     border-radius: 2px;
 }
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -370,7 +311,6 @@ table.dataTable tbody tr:hover {
         opacity: 1;
     }
 }
-
 @keyframes fadeOut {
     from {
         opacity: 1;
@@ -379,7 +319,6 @@ table.dataTable tbody tr:hover {
         opacity: 0;
     }
 }
-
 @keyframes slideInLeft {
     from {
         opacity: 0;
@@ -390,7 +329,6 @@ table.dataTable tbody tr:hover {
         transform: translateX(0);
     }
 }
-
 @keyframes slideInRight {
     from {
         opacity: 0;
@@ -401,108 +339,86 @@ table.dataTable tbody tr:hover {
         transform: translateX(0);
     }
 }
-
 .spinner-border {
     width: 3rem;
     height: 3rem;
 }
-
 @media (max-width: 768px) {
     .hero-section h1 {
         font-size: 2rem;
     }
-    
     .hero-section p {
         font-size: 1rem;
     }
-    
     .section-title {
         font-size: 1.5rem;
     }
-    
     .stat-card {
         margin-bottom: 1rem;
     }
-    
     .navbar-brand {
         font-size: 1.2rem;
     }
 }
-
 #imagePreview {
     margin-top: 1rem;
     max-width: 100%;
 }
-
 #imagePreview img {
     max-height: 300px;
     object-fit: cover;
 }
-
 .auth-card {
     max-width: 500px;
     margin: 2rem auto;
 }
-
 .comment-card {
     border-left: 4px solid var(--primary-color);
     margin-bottom: 1rem;
 }
-
 .comment-author {
     font-weight: bold;
     color: var(--primary-color);
 }
-
 .comment-date {
     font-size: 0.85rem;
     color: #6c757d;
 }
-
 .recipe-meta {
     display: flex;
     align-items: center;
     gap: 1.5rem;
     margin-bottom: 1rem;
 }
-
 .recipe-meta-item {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: #6c757d;
 }
-
 .recipe-meta-item i {
     color: var(--primary-color);
 }
-
 ::-webkit-scrollbar {
     width: 10px;
 }
-
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
-
 ::-webkit-scrollbar-thumb {
     background: var(--primary-color);
     border-radius: 5px;
 }
-
 ::-webkit-scrollbar-thumb:hover {
     background: #ff5252;
 }
-
 .app-view {
     display: none;
 }
-
 .app-view.active {
     display: block;
     animation: fadeIn 0.3s;
 }
-
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }

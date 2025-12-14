@@ -1,21 +1,18 @@
-
 <div class="container">
-    
     <div class="hero-section">
         <div class="hero-content text-center px-4">
-            <h1><i class="fas fa-utensils"></i> Welcome to CookMaster</h1>
-            <p>Discover, Share, and Master Your Favorite Recipes</p>
-            <div>
-                        <button class="btn btn-light btn-lg me-2" onclick="showView('recipes')">
-                            <i class="fas fa-book-open"></i> Explore Recipes
-                        </button>
-                        <button class="btn btn-outline-light btn-lg" onclick="showView('register')">
-                            <i class="fas fa-user-plus"></i> Join Now
-                        </button>
+            <h1 id="homeWelcomeTitle"><i class="fas fa-utensils"></i> Welcome to CookMaster</h1>
+            <p id="homeWelcomeSubtitle">Discover, Share, and Master Your Favorite Recipes</p>
+            <div id="homeActions">
+                <button class="btn btn-light btn-lg me-2" onclick="showView('recipes')">
+                    <i class="fas fa-book-open"></i> Explore Recipes
+                </button>
+                <button class="btn btn-outline-light btn-lg" onclick="showView('register')">
+                    <i class="fas fa-user-plus"></i> Join Now
+                </button>
             </div>
         </div>
     </div>
-
     <div class="row mb-5">
         <div class="col-md-12 mb-4">
             <h2 class="section-title">Why Choose CookMaster?</h2>
@@ -48,97 +45,30 @@
             </div>
         </div>
     </div>
-
-    <div class="row mb-5">
+    <div class="row mb-5" id="trendingRecipesSection">
         <div class="col-md-12 mb-4">
             <h2 class="section-title">Trending Recipes</h2>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card recipe-card">
-                <span class="badge bg-danger">Trending</span>
-                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&h=300&fit=crop" class="card-img-top" alt="Pizza">
-                <div class="card-body">
-                    <h5 class="card-title">Classic Margherita Pizza</h5>
-                    <p class="card-text">Authentic Italian pizza with fresh mozzarella, basil, and tomato sauce.</p>
-                    <div class="recipe-meta">
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-clock"></i> 30 min
-                        </span>
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-fire"></i> Medium
-                        </span>
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-heart"></i> 1.2k
-                        </span>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(1)">
-                        View Recipe
-                    </button>
-                </div>
-            </div>
+        <div class="col-12 text-center" id="trendingRecipesLoader">
+            <i class="fas fa-spinner fa-spin fa-2x text-primary"></i>
+            <p class="text-muted mt-2">Loading trending recipes...</p>
         </div>
-        <div class="col-md-4 mb-4">
-            <div class="card recipe-card">
-                <span class="badge bg-danger">Trending</span>
-                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" class="card-img-top" alt="Salad">
-                <div class="card-body">
-                    <h5 class="card-title">Fresh Garden Salad</h5>
-                    <p class="card-text">Crispy vegetables with homemade vinaigrette dressing.</p>
-                    <div class="recipe-meta">
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-clock"></i> 15 min
-                        </span>
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-fire"></i> Easy
-                        </span>
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-heart"></i> 890
-                        </span>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(4)">
-                        View Recipe
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-4">
-            <div class="card recipe-card">
-                <span class="badge bg-danger">Trending</span>
-                <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&h=300&fit=crop" class="card-img-top" alt="Pasta">
-                <div class="card-body">
-                    <h5 class="card-title">Creamy Carbonara</h5>
-                    <p class="card-text">Rich and creamy pasta with bacon, eggs, and parmesan.</p>
-                    <div class="recipe-meta">
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-clock"></i> 25 min
-                        </span>
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-fire"></i> Medium
-                        </span>
-                        <span class="recipe-meta-item">
-                            <i class="fas fa-heart"></i> 2.1k
-                        </span>
-                    </div>
-                    <button class="btn btn-primary w-100" onclick="loadRecipeDetails(2)">
-                        View Recipe
-                    </button>
-                </div>
-            </div>
+        <div id="trendingRecipesContainer" class="row">
         </div>
     </div>
-
-    <div class="row mb-5">
+    <div class="row mb-5" id="homeCTA">
         <div class="col-md-12">
             <div class="card bg-light">
                 <div class="card-body text-center py-5">
-                    <h3 class="mb-3">Ready to Start Your Culinary Journey?</h3>
-                    <p class="lead mb-4">Join thousands of home cooks and professional chefs sharing their passion for food.</p>
-                    <button class="btn btn-primary btn-lg" onclick="showView('register')">
-                        <i class="fas fa-rocket"></i> Get Started Now
-                    </button>
+                    <h3 class="mb-3" id="ctaTitle">Ready to Start Your Culinary Journey?</h3>
+                    <p class="lead mb-4" id="ctaSubtitle">Join thousands of home cooks and professional chefs sharing their passion for food.</p>
+                    <div id="ctaButtons">
+                        <button class="btn btn-primary btn-lg" onclick="showView('register')">
+                            <i class="fas fa-rocket"></i> Get Started Now
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-

@@ -1,115 +1,99 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../services/FavoriteService.php';
-
+require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 $favoriteService = new FavoriteService();
-
-/**
- * @OA\Get(
- *     path="/favorites",
- *     tags={"Favorites"},
- *     summary="Get all favorites",
- *     @OA\Response(
- *         response=200,
- *         description="List of favorites"
- *     )
- * )
- */
 Flight::route('GET /favorites', function() use ($favoriteService) {
-    echo json_encode($favoriteService->getAllFavorites());
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
+    if ($user['role'] === 'admin') {
+        echo json_encode($favoriteService->getAllFavorites());
+    } else {
+        echo json_encode($favoriteService->getFavoritesByUserId($user['user_id']));
+    }
 });
-
-/**
- * @OA\Get(
- *     path="/favorites/{id}",
- *     tags={"Favorites"},
- *     summary="Get favorite by ID",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Favorite details"
- *     )
- * )
- */
+Flight::route('GET /favorites/user/@userId', function($userId) use ($favoriteService) {
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
+    if ($user['role'] !== 'admin' && $user['user_id'] != $userId) {
+        Flight::halt(403, json_encode(['error' => 'Access denied. You can only view your own favorites.']));
+        return;
+    }
+    echo json_encode($favoriteService->getFavoritesByUserId($userId));
+});
 Flight::route('GET /favorites/@id', function($id) use ($favoriteService) {
-    echo json_encode($favoriteService->getFavoriteById($id));
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $favorite = $favoriteService->getFavoriteById($id);
+    if (!$favorite) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Favorite not found']);
+        return;
+    }
+    $user = Flight::get('user');
+    if ($user['role'] !== 'admin' && $favorite['user_id'] != $user['user_id']) {
+        Flight::halt(403, json_encode(['error' => 'Access denied.']));
+        return;
+    }
+    echo json_encode($favorite);
 });
-
-/**
- * @OA\Post(
- *     path="/favorites",
- *     tags={"Favorites"},
- *     summary="Add a recipe to favorites",
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"user_id", "recipe_id"},
- *             @OA\Property(property="user_id", type="integer", example=1),
- *             @OA\Property(property="recipe_id", type="integer", example=1)
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Recipe added to favorites successfully"
- *     )
- * )
- */
 Flight::route('POST /favorites', function() use ($favoriteService) {
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
     $data = Flight::request()->data->getData();
-    echo json_encode($favoriteService->addFavorite($data['user_id'], $data['recipe_id']));
+    if (empty($data['recipe_id'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Recipe ID is required']);
+        return;
+    }
+    try {
+        $result = $favoriteService->addFavorite($user['user_id'], $data['recipe_id']);
+        echo json_encode(['message' => 'Recipe added to favorites', 'result' => $result]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
 });
-
-/**
- * @OA\Put(
- *     path="/favorites/{id}",
- *     tags={"Favorites"},
- *     summary="Update favorite",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             @OA\Property(property="user_id", type="integer"),
- *             @OA\Property(property="recipe_id", type="integer")
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Favorite updated successfully"
- *     )
- * )
- */
-Flight::route('PUT /favorites/@id', function($id) use ($favoriteService) {
-    $data = Flight::request()->data->getData();
-    echo json_encode($favoriteService->updateFavorite($id, $data['user_id'], $data['recipe_id']));
-});
-
-/**
- * @OA\Delete(
- *     path="/favorites/{id}",
- *     tags={"Favorites"},
- *     summary="Remove recipe from favorites",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Recipe removed from favorites successfully"
- *     )
- * )
- */
 Flight::route('DELETE /favorites/@id', function($id) use ($favoriteService) {
-    echo json_encode($favoriteService->deleteFavorite($id));
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
+    $favorite = $favoriteService->getFavoriteById($id);
+    if (!$favorite) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Favorite not found']);
+        return;
+    }
+    if ($user['role'] !== 'admin' && $favorite['user_id'] != $user['user_id']) {
+        Flight::halt(403, json_encode(['error' => 'Access denied. You can only remove your own favorites.']));
+        return;
+    }
+    try {
+        $result = $favoriteService->deleteFavorite($id);
+        echo json_encode(['message' => 'Recipe removed from favorites', 'result' => $result]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
+});
+Flight::route('DELETE /favorites/recipe/@recipeId', function($recipeId) use ($favoriteService) {
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
+    try {
+        $result = $favoriteService->deleteFavoriteByUserAndRecipe($user['user_id'], $recipeId);
+        echo json_encode(['message' => 'Recipe removed from favorites', 'result' => $result]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
 });

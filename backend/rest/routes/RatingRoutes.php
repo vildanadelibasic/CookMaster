@@ -1,117 +1,108 @@
 <?php
 require_once __DIR__ . '/../../vendor/autoload.php';
 require_once __DIR__ . '/../services/RatingService.php';
-
+require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 $ratingService = new RatingService();
-
-/**
- * @OA\Get(
- *     path="/ratings",
- *     tags={"Ratings"},
- *     summary="Get all ratings",
- *     @OA\Response(
- *         response=200,
- *         description="List of ratings"
- *     )
- * )
- */
 Flight::route('GET /ratings', function() use ($ratingService) {
     echo json_encode($ratingService->getAllRatings());
 });
-
-/**
- * @OA\Get(
- *     path="/ratings/{id}",
- *     tags={"Ratings"},
- *     summary="Get rating by ID",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Rating details"
- *     )
- * )
- */
+Flight::route('GET /ratings/recipe/@recipeId', function($recipeId) use ($ratingService) {
+    $ratings = $ratingService->getRatingsByRecipeId($recipeId);
+    $average = $ratingService->getAverageRating($recipeId);
+    echo json_encode([
+        'ratings' => $ratings,
+        'average' => $average,
+        'count' => count($ratings)
+    ]);
+});
 Flight::route('GET /ratings/@id', function($id) use ($ratingService) {
     echo json_encode($ratingService->getRatingById($id));
 });
-
-/**
- * @OA\Post(
- *     path="/ratings",
- *     tags={"Ratings"},
- *     summary="Create a new rating",
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             required={"user_id", "recipe_id", "rating"},
- *             @OA\Property(property="user_id", type="integer", example=1),
- *             @OA\Property(property="recipe_id", type="integer", example=1),
- *             @OA\Property(property="rating", type="integer", example=5, minimum=1, maximum=5)
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Rating created successfully"
- *     )
- * )
- */
 Flight::route('POST /ratings', function() use ($ratingService) {
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
     $data = Flight::request()->data->getData();
-    echo json_encode($ratingService->addRating($data['user_id'], $data['recipe_id'], $data['rating']));
+    if (empty($data['recipe_id']) || !isset($data['rating'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Recipe ID and rating are required']);
+        return;
+    }
+    $rating = intval($data['rating']);
+    if ($rating < 1 || $rating > 5) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Rating must be between 1 and 5']);
+        return;
+    }
+    try {
+        $result = $ratingService->addRating($user['user_id'], $data['recipe_id'], $rating);
+        echo json_encode(['message' => 'Rating created successfully', 'result' => $result]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
 });
-
-/**
- * @OA\Put(
- *     path="/ratings/{id}",
- *     tags={"Ratings"},
- *     summary="Update rating",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\RequestBody(
- *         required=true,
- *         @OA\JsonContent(
- *             @OA\Property(property="user_id", type="integer"),
- *             @OA\Property(property="recipe_id", type="integer"),
- *             @OA\Property(property="rating", type="integer", minimum=1, maximum=5)
- *         )
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Rating updated successfully"
- *     )
- * )
- */
 Flight::route('PUT /ratings/@id', function($id) use ($ratingService) {
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
+    $ratingRecord = $ratingService->getRatingById($id);
+    if (!$ratingRecord) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Rating not found']);
+        return;
+    }
+    if ($user['role'] !== 'admin' && $ratingRecord['user_id'] != $user['user_id']) {
+        Flight::halt(403, json_encode(['error' => 'Access denied. You can only edit your own ratings.']));
+        return;
+    }
     $data = Flight::request()->data->getData();
-    echo json_encode($ratingService->updateRating($id, $data['user_id'], $data['recipe_id'], $data['rating']));
+    if (!isset($data['rating'])) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Rating value is required']);
+        return;
+    }
+    $rating = intval($data['rating']);
+    if ($rating < 1 || $rating > 5) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Rating must be between 1 and 5']);
+        return;
+    }
+    try {
+        $result = $ratingService->updateRating(
+            $id, 
+            $ratingRecord['user_id'], 
+            $ratingRecord['recipe_id'], 
+            $rating
+        );
+        echo json_encode(['message' => 'Rating updated successfully', 'result' => $result]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
 });
-
-/**
- * @OA\Delete(
- *     path="/ratings/{id}",
- *     tags={"Ratings"},
- *     summary="Delete rating",
- *     @OA\Parameter(
- *         name="id",
- *         in="path",
- *         required=true,
- *         @OA\Schema(type="integer")
- *     ),
- *     @OA\Response(
- *         response=200,
- *         description="Rating deleted successfully"
- *     )
- * )
- */
 Flight::route('DELETE /ratings/@id', function($id) use ($ratingService) {
-    echo json_encode($ratingService->deleteRating($id));
+    if (!AuthMiddleware::authenticate()) {
+        return;
+    }
+    $user = Flight::get('user');
+    $ratingRecord = $ratingService->getRatingById($id);
+    if (!$ratingRecord) {
+        http_response_code(404);
+        echo json_encode(['error' => 'Rating not found']);
+        return;
+    }
+    if ($user['role'] !== 'admin' && $ratingRecord['user_id'] != $user['user_id']) {
+        Flight::halt(403, json_encode(['error' => 'Access denied. You can only delete your own ratings.']));
+        return;
+    }
+    try {
+        $result = $ratingService->deleteRating($id);
+        echo json_encode(['message' => 'Rating deleted successfully', 'result' => $result]);
+    } catch (Exception $e) {
+        http_response_code(400);
+        echo json_encode(['error' => $e->getMessage()]);
+    }
 });

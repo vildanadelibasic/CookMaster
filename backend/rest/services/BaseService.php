@@ -1,33 +1,25 @@
 <?php
 require_once(__DIR__ . '/../dao/BaseDao.php');
-
 class BaseService {
     protected $dao;
-
     public function __construct($dao) {
         $this->dao = $dao;
     }
-
     public function getAll() {
         return $this->dao->getAll();
     }
-
     public function getById($id) {
         return $this->dao->getById($id);
     }
-
     public function create($data) {
         return $this->dao->insert($data);
     }
-
     public function update($id, $data) {
         return $this->dao->update($id, $data);
     }
-
     public function delete($id) {
         return $this->dao->delete($id);
     }
-
 protected function validate($data, $rules) {
     foreach ($rules as $field => $constraints) {
         if (($constraints['required'] ?? false) && !isset($data[$field])) {
@@ -38,8 +30,6 @@ protected function validate($data, $rules) {
         }
     }
 }
-
-
  protected function sanitize($data) {
         $sanitized = [];
         foreach ($data as $key => $value) {

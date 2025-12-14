@@ -4,22 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CookMaster - Recipe Sharing Platform</title>
-
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-
     <link rel="stylesheet" href="assets/css/style.css?v=3.0">
     <link rel="stylesheet" href="assets/css/spapp.css">
 </head>
 <body>
-    
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold text-primary" href="javascript:void(0)" onclick="showView('home')">
@@ -45,7 +39,6 @@
                             <i class="fas fa-comments"></i> Community
                         </a>
                     </li>
-
                     <li class="nav-item guest-nav">
                         <a class="nav-link" href="javascript:void(0)" onclick="showView('login')">
                             <i class="fas fa-sign-in-alt"></i> Login
@@ -56,7 +49,6 @@
                             <i class="fas fa-user-plus"></i> Register
                         </a>
                     </li>
-
                     <li class="nav-item auth-nav d-none">
                         <a class="nav-link" href="javascript:void(0)" onclick="showView('favorites')">
                             <i class="fas fa-heart"></i> Favorites
@@ -67,7 +59,6 @@
                             <i class="fas fa-plus-circle"></i> Submit Recipe
                         </a>
                     </li>
-
                     <li class="nav-item dropdown admin-nav d-none">
                         <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="adminDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="fas fa-user-shield"></i> Admin
@@ -78,7 +69,6 @@
                             <li><a class="dropdown-item" href="javascript:void(0)" onclick="showView('admin-users')">Manage Users</a></li>
                         </ul>
                     </li>
-
                     <li class="nav-item auth-nav d-none">
                         <span class="nav-link">
                             <i class="fas fa-user-circle"></i> <span id="username-display">User</span>
@@ -93,21 +83,14 @@
             </div>
         </div>
     </nav>
-
     <main id="app-container" class="py-4">
-        
     </main>
-
     <script src="assets/js/jquery.min.js"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
-
     <script src="assets/js/jquery.spapp.min.js"></script>
-
-    <script src="assets/js/app.js?v=7.0"></script>
+    <script src="services/api.js?v=1.0"></script>
+    <script src="assets/js/app.js?v=11.0"></script>
 </body>
 </html>
-
