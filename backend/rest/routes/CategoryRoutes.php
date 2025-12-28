@@ -13,7 +13,11 @@ Flight::route('POST /categories', function() use ($categoryService) {
     if (!AuthMiddleware::adminOnly()) {
         return;
     }
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     if (empty($data['name'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Category name is required']);
@@ -31,7 +35,11 @@ Flight::route('PUT /categories/@id', function($id) use ($categoryService) {
     if (!AuthMiddleware::adminOnly()) {
         return;
     }
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     try {
         $result = $categoryService->updateCategory($id, $data);
         echo json_encode(['message' => 'Category updated successfully', 'result' => $result]);

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once __DIR__ . '/BaseDAO.php';
 class RatingDao extends BaseDao {
     public function __construct() {
         parent::__construct('ratings', 'rat_id');
@@ -66,4 +66,4 @@ class RatingDao extends BaseDao {
         return $result['average_rating'] ? round($result['average_rating'], 1) : 0;
     }
 }
-?>
+

@@ -14,7 +14,11 @@ Flight::route('POST /recipes', function() use ($recipeService) {
         return;
     }
     $user = Flight::get('user');
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     $data['user_id'] = $user['user_id'];
     try {
         $result = $recipeService->createRecipe($data); 
@@ -40,7 +44,11 @@ Flight::route('PUT /recipes/@id', function($id) use ($recipeService) {
         echo json_encode(['error' => 'Access denied. You can only edit your own recipes.']);
         return;
     }
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     try {
         $result = $recipeService->updateRecipe($id, $data);
         echo json_encode(['message' => 'Recipe updated successfully', 'result' => $result]);
@@ -73,4 +81,3 @@ Flight::route('DELETE /recipes/@id', function($id) use ($recipeService) {
         echo json_encode(['error' => $e->getMessage()]);
     }
 });
-?>

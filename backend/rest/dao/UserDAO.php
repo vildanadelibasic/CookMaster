@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once __DIR__ . '/BaseDAO.php';
 class UserDao extends BaseDao {
     public function __construct() {
         parent::__construct('users', 'user_id');
@@ -37,4 +37,4 @@ class UserDao extends BaseDao {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }
-?>
+

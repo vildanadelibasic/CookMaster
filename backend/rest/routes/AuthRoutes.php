@@ -5,7 +5,11 @@ require_once __DIR__ . '/../middleware/AuthMiddleware.php';
 $userService = new UserService();
 Flight::route('POST /auth/register', function() use ($userService) {
     header('Content-Type: application/json');
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     if (empty($data['name']) || empty($data['email']) || empty($data['password'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Name, email and password are required.']);
@@ -40,7 +44,11 @@ Flight::route('POST /auth/register', function() use ($userService) {
 });
 Flight::route('POST /auth/login', function() use ($userService) {
     header('Content-Type: application/json');
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     if (empty($data['email']) || empty($data['password'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Email and password are required.']);
@@ -88,7 +96,11 @@ Flight::route('PUT /auth/profile', function() use ($userService) {
         return;
     }
     $tokenUser = Flight::get('user');
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     try {
         $currentUser = $userService->getUserById($tokenUser['user_id']);
         $name = isset($data['name']) ? $data['name'] : $currentUser['name'];
@@ -123,4 +135,3 @@ Flight::route('PUT /auth/profile', function() use ($userService) {
         echo json_encode(['error' => $e->getMessage()]);
     }
 });
-?>

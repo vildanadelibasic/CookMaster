@@ -1,6 +1,6 @@
 <?php
 require_once 'BaseService.php';
-require_once(__DIR__ . '/../dao/FavoriteDao.php');
+require_once(__DIR__ . '/../dao/FavoriteDAO.php');
 class FavoriteService extends BaseService {
    private $favoriteValidationRules = [
        'user_id' => ['required' => true],
@@ -46,4 +46,4 @@ class FavoriteService extends BaseService {
        return $this->dao->delete_by_user_recipe($user_id, $recipe_id);
    }
 }
-?>
+

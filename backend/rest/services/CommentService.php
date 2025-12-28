@@ -1,6 +1,6 @@
 <?php
 require_once 'BaseService.php';
-require_once(__DIR__ . '/../dao/CommentDao.php');
+require_once(__DIR__ . '/../dao/CommentDAO.php');
 class CommentService extends BaseService {
     private $commentValidationRules = [
         'user_id' => ['required' => true],
@@ -65,4 +65,4 @@ class CommentService extends BaseService {
         return $this->dao->get_by_recipe($recipe_id);
     }
 }
-?>
+

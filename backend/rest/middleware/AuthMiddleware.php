@@ -1,16 +1,52 @@
 <?php
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+
+if (!function_exists('getallheaders')) {
+    function getallheaders() {
+        $headers = [];
+        foreach ($_SERVER as $name => $value) {
+            if (substr($name, 0, 5) == 'HTTP_') {
+                $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+            }
+        }
+        if (isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $headers['Authorization'] = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        return $headers;
+    }
+}
+
 class AuthMiddleware {
     public static function getToken() {
+        $authHeader = null;
+        
         $headers = getallheaders();
         if (isset($headers['Authorization'])) {
             $authHeader = $headers['Authorization'];
         } elseif (isset($headers['authorization'])) {
             $authHeader = $headers['authorization'];
-        } else {
+        }
+        
+        if (!$authHeader && isset($_SERVER['HTTP_AUTHORIZATION'])) {
+            $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
+        }
+        
+        if (!$authHeader && isset($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) {
+            $authHeader = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+        }
+        
+        if (!$authHeader && function_exists('apache_request_headers')) {
+            $apacheHeaders = apache_request_headers();
+            if (isset($apacheHeaders['Authorization'])) {
+                $authHeader = $apacheHeaders['Authorization'];
+            }
+        }
+        
+        if (!$authHeader) {
             return null;
         }
+        
         if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
             return $matches[1];
         }
@@ -82,4 +118,3 @@ class AuthMiddleware {
         return JWT::encode($payload, Config::JWT_SECRET(), 'HS256');
     }
 }
-?>

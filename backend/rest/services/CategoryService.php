@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/BaseService.php';
-require_once __DIR__ . '/../dao/CategoryDao.php';
+require_once __DIR__ . '/../dao/CategoryDAO.php';
 class CategoryService extends BaseService {
     private $categoryValidationRules = [
         'name' => ['required' => true, 'max' => 100],
@@ -26,4 +26,4 @@ class CategoryService extends BaseService {
         return $this->dao->get_categories_with_recipes();
     }
 }
-?>
+
