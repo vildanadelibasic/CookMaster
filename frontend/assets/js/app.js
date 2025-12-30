@@ -26,7 +26,6 @@ function hideLoading() {
 }
 async function loadAllViews() {
     if (viewsLoaded) return;
-    console.log('📦 Loading all pages...');
     const pages = [
         'home', 'recipes', 'recipe-details', 'favorites', 
         'submit-recipe', 'community', 'login', 'register',
@@ -44,16 +43,13 @@ async function loadAllViews() {
             if (page === 'home') div.classList.add('active');
             div.innerHTML = html;
             container.appendChild(div);
-            console.log(`✅ Loaded: ${page}`);
         } catch (error) {
             console.error(`❌ Failed to load ${page}:`, error);
         }
     }
     viewsLoaded = true;
-    console.log('✅ All pages loaded!');
 }
 function showView(viewName) {
-    console.log(`📄 Showing: ${viewName}`);
     window.location.hash = viewName;
     document.querySelectorAll('.app-view').forEach(view => {
         view.classList.remove('active');
@@ -138,20 +134,20 @@ function setupPage(pageName) {
     }, 100);
 }
 function isAuthenticated() {
-    if (typeof API !== 'undefined') {
-        return API.Token.isAuthenticated();
+    if (typeof AuthService !== 'undefined') {
+        return AuthService.isAuthenticated();
     }
     return !!localStorage.getItem('currentUser');
 }
 function isAdmin() {
-    if (typeof API !== 'undefined') {
-        return API.Token.isAdmin();
+    if (typeof AuthService !== 'undefined') {
+        return AuthService.isAdmin();
     }
     return localStorage.getItem('userRole') === 'admin';
 }
 function getCurrentUser() {
-    if (typeof API !== 'undefined') {
-        return API.Token.getUser();
+    if (typeof AuthService !== 'undefined') {
+        return AuthService.getCurrentUser();
     }
     return {
         name: localStorage.getItem('currentUser'),
@@ -222,14 +218,13 @@ function showAccessDenied(type = 'login') {
     }
 }
 async function loadHomePage() {
-    console.log('🏠 Loading home page...');
     updateHomeWelcome();
     try {
-        if (typeof API !== 'undefined') {
-            const recipes = await API.Recipes.getAll();
+        if (typeof RecipeService !== 'undefined') {
+            const recipes = await RecipeService.getAll();
             if (recipes && recipes.length > 0) {
                 allRecipes = recipes;
-                const trendingRecipes = recipes.slice(0, 3);
+                const trendingRecipes = RecipeService.getTrendingRecipes(3);
                 renderTrendingRecipes(trendingRecipes);
             } else {
                 const loader = document.getElementById('trendingRecipesLoader');
@@ -356,18 +351,16 @@ function renderTrendingRecipes(recipes) {
 async function loadRecipesFromBackend() {
     showLoading();
     try {
-        if (typeof API !== 'undefined') {
+        if (typeof RecipeService !== 'undefined') {
             const [recipes, categories] = await Promise.all([
-                API.Recipes.getAll(),
-                API.Categories.getAll()
+                RecipeService.getAll(),
+                RecipeService.getCategories()
             ]);
-            console.log('Recipes loaded:', recipes);
-            console.log('Categories loaded:', categories);
             allRecipes = recipes || [];
             allCategories = categories || [];
-            if (API.Token.isAuthenticated()) {
+            if (AuthService.isAuthenticated()) {
                 try {
-                    userFavorites = await API.Favorites.getAll();
+                    userFavorites = await FavoriteService.getAll();
                 } catch (e) {
                     userFavorites = [];
                 }
@@ -455,7 +448,6 @@ function populateCategoryFilter(categories) {
     select.innerHTML = html;
 }
 function setupRecipesPage() {
-    console.log('🔧 Setting up Recipes page...');
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
     if (!searchInput || !categoryFilter) return;
@@ -478,7 +470,6 @@ function setupRecipesPage() {
         });
         updateResultsCount(visibleCount);
     };
-    console.log('✅ Recipes page ready!');
 }
 function updateResultsCount(count) {
     const resultsCount = document.getElementById('resultsCount');
@@ -491,19 +482,18 @@ function updateResultsCount(count) {
     }
 }
 window.loadRecipeDetails = async function(recipeId) {
-    console.log('📖 Loading recipe details:', recipeId);
     showLoading();
     window.currentRecipeId = recipeId;
     try {
-        if (typeof API === 'undefined') {
-            showToast('❌ API not available', 'error');
+        if (typeof RecipeService === 'undefined') {
+            showToast('❌ Services not available', 'error');
             hideLoading();
             return;
         }
         const [recipe, ratingsData, comments] = await Promise.all([
-            API.Recipes.getById(recipeId),
-            API.Ratings.getByRecipe(recipeId),
-            API.Comments.getByRecipe(recipeId)
+            RecipeService.getById(recipeId),
+            RatingService.getByRecipe(recipeId),
+            CommentService.getByRecipe(recipeId)
         ]);
         if (!recipe) {
             showToast('❌ Recipe not found', 'error');
@@ -522,7 +512,6 @@ window.loadRecipeDetails = async function(recipeId) {
     }
 };
 function renderRecipeDetails(recipe, ratingsData, comments) {
-    console.log('🎨 Rendering recipe details:', recipe.title);
     const imageUrl = recipe.image_url || getDefaultImage(recipe.category_id);
     const categoryName = getCategoryName(recipe.category_id);
     window.currentRecipeId = recipe.recipe_id;
@@ -568,19 +557,22 @@ function renderRecipeDetails(recipe, ratingsData, comments) {
     renderRecipeComments(comments, recipe.recipe_id);
     const isFavorite = userFavorites.some(f => f.recipe_id == recipe.recipe_id);
     updateFavoriteButton(isFavorite);
-    console.log('✅ Recipe details rendered successfully!');
 }
 function renderRecipeRating(ratingsData) {
     const likesSpan = document.getElementById('recipeLikes');
     if (likesSpan) {
-        const avg = ratingsData.average ? parseFloat(ratingsData.average).toFixed(1) : 0;
-        const count = ratingsData.count || 0;
-        likesSpan.innerHTML = `
-            <span class="text-warning">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5 - Math.round(avg))}</span>
-            ${avg} (${count} ratings)
-        `;
+        if (typeof RatingService !== 'undefined') {
+            likesSpan.innerHTML = `<span class="text-warning">${RatingService.formatDisplay(ratingsData)}</span>`;
+        } else {
+            const avg = ratingsData.average ? parseFloat(ratingsData.average).toFixed(1) : 0;
+            const count = ratingsData.count || 0;
+            likesSpan.innerHTML = `
+                <span class="text-warning">${'★'.repeat(Math.round(avg))}${'☆'.repeat(5 - Math.round(avg))}</span>
+                ${avg} (${count} ratings)
+            `;
+        }
     }
-    if (typeof API !== 'undefined' && API.Token.isAuthenticated()) {
+    if (typeof AuthService !== 'undefined' && AuthService.isAuthenticated()) {
         addRatingSection();
     }
 }
@@ -620,10 +612,7 @@ window.rateRecipe = async function(rating) {
     const stars = document.querySelectorAll('.rating-star');
     stars.forEach(star => star.style.pointerEvents = 'none');
     try {
-        await API.Ratings.create({
-            recipe_id: window.currentRecipeId,
-            rating: rating
-        });
+        await RatingService.rateRecipe(window.currentRecipeId, rating);
         stars.forEach((star, index) => {
             if (index < rating) {
                 star.classList.remove('far');
@@ -634,7 +623,7 @@ window.rateRecipe = async function(rating) {
             }
         });
         showToast(`⭐ Thanks for rating! You gave ${rating} stars`, 'success');
-        const ratingsData = await API.Ratings.getByRecipe(window.currentRecipeId);
+        const ratingsData = await RatingService.getByRecipe(window.currentRecipeId);
         renderRecipeRating(ratingsData);
     } catch (error) {
         console.error('Rating error:', error);
@@ -706,24 +695,23 @@ window.submitRecipeComment = async function(recipeId) {
     }
     const textarea = document.getElementById('newCommentText');
     const content = textarea.value.trim();
-    if (!content) {
-        showToast('❌ Please write a comment', 'error');
-        return;
-    }
+    
     const btn = textarea.nextElementSibling;
     if (btn) btn.disabled = true;
     try {
-        await API.Comments.create({
-            recipe_id: recipeId,
-            content: content,
-            is_question: 0
-        });
+        await CommentService.postComment(recipeId, content, false);
         textarea.value = '';
+        if (typeof ValidationService !== 'undefined') {
+            ValidationService.clearFieldError(textarea);
+        }
         showToast('✅ Comment posted!', 'success');
-        const comments = await API.Comments.getByRecipe(recipeId);
+        const comments = await CommentService.getByRecipe(recipeId);
         renderRecipeComments(comments, recipeId);
     } catch (error) {
         console.error('Comment error:', error);
+        if (typeof ValidationService !== 'undefined') {
+            ValidationService.showFieldError(textarea, error.message);
+        }
         showToast(`❌ ${error.message || 'Failed to post comment'}`, 'error');
     } finally {
         if (btn) btn.disabled = false;
@@ -764,17 +752,14 @@ window.toggleRecipeFavorite = async function() {
     const btn = document.getElementById('favoriteBtn');
     if (btn) btn.disabled = true;
     try {
-        const isFavorite = userFavorites.some(f => f.recipe_id == window.currentRecipeId);
-        if (isFavorite) {
-            await API.Favorites.removeByRecipe(window.currentRecipeId);
-            userFavorites = userFavorites.filter(f => f.recipe_id != window.currentRecipeId);
-            showToast('💔 Removed from favorites', 'success');
-        } else {
-            await API.Favorites.add(window.currentRecipeId);
-            userFavorites.push({ recipe_id: window.currentRecipeId });
+        const result = await FavoriteService.toggle(window.currentRecipeId);
+        userFavorites = FavoriteService.getCachedFavorites();
+        if (result.isFavorite) {
             showToast('❤️ Added to favorites!', 'success');
+        } else {
+            showToast('💔 Removed from favorites', 'success');
         }
-        updateFavoriteButton(!isFavorite);
+        updateFavoriteButton(result.isFavorite);
     } catch (error) {
         console.error('Favorite error:', error);
         showToast(`❌ ${error.message || 'Failed to update favorites'}`, 'error');
@@ -783,17 +768,15 @@ window.toggleRecipeFavorite = async function() {
     }
 };
 async function loadFavoritesPage() {
-    console.log('❤️ Loading favorites page...');
-    if (typeof API === 'undefined' || !API.Token.isAuthenticated()) {
+    if (typeof FavoriteService === 'undefined' || !AuthService.isAuthenticated()) {
         showToast('❌ Please login to view favorites', 'error');
         showView('login');
         return;
     }
     showLoading();
     try {
-        const favorites = await API.Favorites.getAll();
+        const favorites = await FavoriteService.getAll();
         userFavorites = favorites || [];
-        console.log('Favorites loaded:', favorites);
         renderFavorites(favorites);
     } catch (error) {
         console.error('Load favorites error:', error);
@@ -864,15 +847,15 @@ window.removeFavorite = async function(favoriteId, recipeId, btn) {
     btn.disabled = true;
     try {
         if (favoriteId && favoriteId !== recipeId) {
-            await API.Favorites.remove(favoriteId);
+            await FavoriteService.remove(favoriteId);
         } else {
-            await API.Favorites.removeByRecipe(recipeId);
+            await FavoriteService.removeByRecipe(recipeId);
         }
         const card = btn.closest('.col-md-4');
         if (card) {
             card.remove();
         }
-        userFavorites = userFavorites.filter(f => f.favorite_id != favoriteId && f.recipe_id != recipeId);
+        userFavorites = FavoriteService.getCachedFavorites();
         const countAlert = document.querySelector('#view-favorites .alert');
         if (countAlert) {
             countAlert.innerHTML = `<i class="fas fa-heart"></i> You have <strong>${userFavorites.length}</strong> recipes in your favorites`;
@@ -895,21 +878,18 @@ window.toggleFavorite = async function(button, recipeId) {
         return;
     }
     const icon = button.querySelector('i');
-    const isFavorite = icon.classList.contains('fas');
     button.disabled = true;
     try {
-        if (isFavorite) {
-            await API.Favorites.removeByRecipe(recipeId);
-            icon.classList.remove('fas');
-            icon.classList.add('far');
-            userFavorites = userFavorites.filter(f => f.recipe_id != recipeId);
-            showToast('💔 Removed from favorites', 'success');
-        } else {
-            await API.Favorites.add(recipeId);
+        const result = await FavoriteService.toggle(recipeId);
+        userFavorites = FavoriteService.getCachedFavorites();
+        if (result.isFavorite) {
             icon.classList.remove('far');
             icon.classList.add('fas');
-            userFavorites.push({ recipe_id: recipeId });
             showToast('❤️ Added to favorites!', 'success');
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            showToast('💔 Removed from favorites', 'success');
         }
     } catch (error) {
         console.error('Toggle favorite error:', error);
@@ -919,11 +899,9 @@ window.toggleFavorite = async function(button, recipeId) {
     }
 };
 async function loadCommunityComments() {
-    console.log('💬 Loading community comments...');
     try {
-        if (typeof API !== 'undefined') {
-            const comments = await API.Comments.getAll();
-            console.log('Community comments loaded:', comments);
+        if (typeof CommentService !== 'undefined') {
+            const comments = await CommentService.getAll();
             renderCommunityComments(comments);
         }
     } catch (error) {
@@ -1000,7 +978,6 @@ function renderCommunityComments(comments) {
     updateCommentsCount(comments.length);
 }
 function setupCommunityPage() {
-    console.log('🔧 Setting up Community page...');
     updateCommunityAuthUI();
     const postBtn = document.getElementById('communityPostBtn');
     if (postBtn) {
@@ -1013,22 +990,21 @@ function setupCommunityPage() {
             const textarea = document.getElementById('communityNewCommentText');
             const isQuestion = document.getElementById('communityIsQuestion');
             const text = textarea.value.trim();
-            if (!text) {
-                showToast('❌ Please write something!', 'error');
-                return;
-            }
+            
             try {
-                await API.Comments.create({
-                    recipe_id: 1,
-                    content: text,
-                    is_question: isQuestion.checked ? 1 : 0
-                });
+                await CommentService.postComment(1, text, isQuestion.checked);
                 textarea.value = '';
                 isQuestion.checked = false;
+                if (typeof ValidationService !== 'undefined') {
+                    ValidationService.clearFieldError(textarea);
+                }
                 showToast('✅ Comment posted!', 'success');
                 loadCommunityComments();
             } catch (error) {
                 console.error('Post comment error:', error);
+                if (typeof ValidationService !== 'undefined') {
+                    ValidationService.showFieldError(textarea, error.message);
+                }
                 showToast(`❌ ${error.message || 'Failed to post comment'}`, 'error');
             }
         };
@@ -1060,7 +1036,6 @@ function setupCommunityPage() {
             filterQuestions();
         };
     }
-    console.log('✅ Community page ready!');
 }
 function attachCommentEventListeners() {
     document.querySelectorAll('.community-like-btn').forEach(btn => {
@@ -1087,7 +1062,7 @@ function attachCommentEventListeners() {
     });
     document.querySelectorAll('.community-submit-reply').forEach(btn => {
         btn.onclick = async function() {
-            if (typeof API === 'undefined' || !API.Token.isAuthenticated()) {
+            if (!AuthService.isAuthenticated()) {
                 showToast('❌ Please login to reply', 'error');
                 showView('login');
                 return;
@@ -1102,13 +1077,8 @@ function attachCommentEventListeners() {
                 return;
             }
             try {
-                await API.Comments.create({
-                    recipe_id: recipeId || 1,
-                    content: text,
-                    parent_id: parseInt(id),
-                    is_question: 0
-                });
-                const user = API.Token.getUser();
+                await CommentService.reply(recipeId || 1, parseInt(id), text);
+                const user = AuthService.getCurrentUser();
             const replyHTML = `
                 <div class="mt-2 ms-4 border-start border-primary border-3 ps-3">
                         <small><strong>${user ? user.name : 'You'}</strong> - Just now</small>
@@ -1206,12 +1176,49 @@ function updateCommentsCount(count) {
     countEl.textContent = `Showing ${count} comment(s)`;
 }
 function setupSubmitRecipePage() {
-    console.log('🔧 Setting up Submit Recipe page...');
     const recipeForm = document.getElementById('recipeForm');
     if (!recipeForm) return;
     loadCategoriesForForm();
     const newForm = recipeForm.cloneNode(true);
     recipeForm.parentNode.replaceChild(newForm, recipeForm);
+    
+    if (typeof ValidationService !== 'undefined') {
+        const fieldMappings = {
+            'submitRecipeTitle': 'title',
+            'submitRecipeCategory': 'category',
+            'submitRecipeDifficulty': 'difficulty',
+            'submitPrepTime': 'prepTime',
+            'submitServings': 'servings',
+            'submitRecipeDescription': 'description',
+            'submitRecipeIngredients': 'ingredients',
+            'submitRecipeInstructions': 'instructions',
+            'submitRecipeImage': 'imageUrl'
+        };
+        
+        Object.entries(fieldMappings).forEach(([inputId, schemaField]) => {
+            const input = newForm.querySelector(`#${inputId}`);
+            if (input && ValidationService.schemas.submitRecipe[schemaField]) {
+                input.addEventListener('blur', function() {
+                    const error = ValidationService.validateField(this.value, ValidationService.schemas.submitRecipe[schemaField]);
+                    if (error) {
+                        ValidationService.showFieldError(this, error);
+                    } else if (this.value) {
+                        ValidationService.showFieldValid(this);
+                    }
+                });
+                
+                input.addEventListener('input', function() {
+                    if (this.classList.contains('is-invalid')) {
+                        const error = ValidationService.validateField(this.value, ValidationService.schemas.submitRecipe[schemaField]);
+                        if (!error) {
+                            ValidationService.showFieldValid(this);
+                        }
+                    }
+                });
+            }
+        });
+    }
+    
     const imageInput = newForm.querySelector('#submitRecipeImage');
     if (imageInput) {
         imageInput.onchange = function(e) {
@@ -1229,21 +1236,58 @@ function setupSubmitRecipePage() {
             showView('login');
             return;
         }
-        const title = document.getElementById('submitRecipeTitle').value;
+        const title = document.getElementById('submitRecipeTitle').value.trim();
         const category = document.getElementById('submitRecipeCategory').value;
         const difficulty = document.getElementById('submitRecipeDifficulty').value;
         const prepTime = document.getElementById('submitPrepTime').value;
         const servings = document.getElementById('submitServings').value;
-        const description = document.getElementById('submitRecipeDescription').value;
-        const ingredients = document.getElementById('submitRecipeIngredients').value;
-        const instructions = document.getElementById('submitRecipeInstructions').value;
-        const imageUrl = document.getElementById('submitRecipeImage').value;
+        const description = document.getElementById('submitRecipeDescription').value.trim();
+        const ingredients = document.getElementById('submitRecipeIngredients').value.trim();
+        const instructions = document.getElementById('submitRecipeInstructions').value.trim();
+        const imageUrl = document.getElementById('submitRecipeImage').value.trim();
+        
+        if (typeof ValidationService !== 'undefined') {
+            ValidationService.clearFormErrors(newForm);
+            
+            const formData = {
+                title, category, difficulty, prepTime, servings,
+                description, ingredients, instructions, imageUrl
+            };
+            
+            const validation = ValidationService.validateRecipeSubmission(formData);
+            if (!validation.isValid) {
+                const fieldIdMappings = {
+                    'title': 'submitRecipeTitle',
+                    'category': 'submitRecipeCategory',
+                    'difficulty': 'submitRecipeDifficulty',
+                    'prepTime': 'submitPrepTime',
+                    'servings': 'submitServings',
+                    'description': 'submitRecipeDescription',
+                    'ingredients': 'submitRecipeIngredients',
+                    'instructions': 'submitRecipeInstructions',
+                    'imageUrl': 'submitRecipeImage'
+                };
+                
+                Object.entries(validation.errors).forEach(([field, error]) => {
+                    const inputId = fieldIdMappings[field];
+                    const input = document.getElementById(inputId);
+                    if (input) {
+                        ValidationService.showFieldError(input, error);
+                    }
+                });
+                
+                const firstError = Object.values(validation.errors)[0];
+                showToast(`❌ ${firstError}`, 'error');
+                return;
+            }
+        }
+        
         const submitBtn = newForm.querySelector('button[type="submit"]');
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
         try {
-            if (typeof API !== 'undefined') {
+            if (typeof RecipeService !== 'undefined') {
                 const recipeData = {
                     title,
                     description,
@@ -1256,9 +1300,12 @@ function setupSubmitRecipePage() {
                     image_url: imageUrl || null,
                     status: 'pending'
                 };
-                await API.Recipes.create(recipeData);
+                await RecipeService.create(recipeData);
                 showToast('✅ Recipe submitted successfully! It will be reviewed by our moderators.', 'success');
                 newForm.reset();
+                if (typeof ValidationService !== 'undefined') {
+                    ValidationService.clearFormErrors(newForm);
+                }
                 const preview = document.getElementById('submitImagePreview');
                 if (preview) preview.innerHTML = '';
                 showView('recipes');
@@ -1271,12 +1318,11 @@ function setupSubmitRecipePage() {
             submitBtn.innerHTML = originalBtnText;
         }
     };
-    console.log('✅ Submit Recipe page ready!');
 }
 async function loadCategoriesForForm() {
     try {
-        if (typeof API !== 'undefined') {
-            const categories = await API.Categories.getAll();
+        if (typeof RecipeService !== 'undefined') {
+            const categories = await RecipeService.getCategories();
             allCategories = categories || [];
             const select = document.getElementById('submitRecipeCategory');
             if (select && categories && categories.length > 0) {
@@ -1289,14 +1335,13 @@ async function loadCategoriesForForm() {
     }
 }
 async function loadAdminDashboard() {
-    console.log('📊 Loading admin dashboard...');
     try {
-        if (typeof API !== 'undefined') {
+        if (typeof RecipeService !== 'undefined') {
             const [recipes, users, comments, categories] = await Promise.all([
-                API.Recipes.getAll(),
-                API.Users.getAll().catch(() => []),
-                API.Comments.getAll().catch(() => []),
-                API.Categories.getAll().catch(() => [])
+                RecipeService.getAll(),
+                UserService.getAll().catch(() => []),
+                CommentService.getAll().catch(() => []),
+                RecipeService.getCategories().catch(() => [])
             ]);
             allCategories = categories || [];
             const totalRecipes = document.querySelector('#view-admin-dashboard .stat-recipes');
@@ -1342,7 +1387,6 @@ async function loadAdminDashboard() {
                     activityBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No recent activity</td></tr>';
                 }
             }
-            console.log('✅ Admin dashboard stats loaded');
         }
     } catch (error) {
         console.error('Load admin dashboard error:', error);
@@ -1350,8 +1394,8 @@ async function loadAdminDashboard() {
 }
 async function loadAdminUsers() {
     try {
-        if (typeof API !== 'undefined' && API.Token.isAdmin()) {
-            const users = await API.Users.getAll();
+        if (typeof UserService !== 'undefined' && AuthService.isAdmin()) {
+            const users = await UserService.getAll();
             const tbody = document.querySelector('#usersTable tbody');
             if (users && users.length > 0) {
                 const totalUsers = document.getElementById('totalUsersCount');
@@ -1409,8 +1453,8 @@ async function loadAdminUsers() {
 }
 async function loadAdminRecipes() {
     try {
-        if (typeof API !== 'undefined') {
-            const recipes = await API.Recipes.getAll();
+        if (typeof RecipeService !== 'undefined') {
+            const recipes = await RecipeService.getAll();
             const tbody = document.querySelector('#recipesTable tbody');
             if (recipes && recipes.length > 0) {
                 const totalRecipes = document.getElementById('totalRecipesCount');
@@ -1480,7 +1524,7 @@ window.deleteUser = async function(userId) {
         return;
     }
     try {
-        await API.Users.delete(userId);
+        await UserService.delete(userId);
         showToast('✅ User deleted successfully', 'success');
         document.querySelector(`tr[data-user-id="${userId}"]`)?.remove();
     } catch (error) {
@@ -1496,7 +1540,7 @@ window.changeUserRole = async function(userId) {
     const select = document.getElementById(`role-${userId}`);
     const newRole = select.value;
     try {
-        await API.Users.update(userId, { role: newRole });
+        await UserService.changeRole(userId, newRole);
         showToast(`✅ User role changed to ${newRole}`, 'success');
     } catch (error) {
         console.error('Change role error:', error);
@@ -1513,7 +1557,7 @@ window.deleteRecipe = async function(recipeId) {
         return;
     }
     try {
-        await API.Recipes.delete(recipeId);
+        await RecipeService.delete(recipeId);
         showToast('✅ Recipe deleted successfully', 'success');
         document.querySelector(`tr[data-recipe-id="${recipeId}"]`)?.remove();
     } catch (error) {
@@ -1527,7 +1571,7 @@ window.approveRecipe = async function(recipeId) {
         return;
     }
     try {
-        await API.Recipes.update(recipeId, { status: 'active' });
+        await RecipeService.approve(recipeId);
         showToast('✅ Recipe approved successfully', 'success');
         const row = document.querySelector(`tr[data-recipe-id="${recipeId}"]`);
         if (row) {
@@ -1543,14 +1587,12 @@ window.approveRecipe = async function(recipeId) {
     }
 };
 function checkAuth() {
-    if (typeof API !== 'undefined' && API.Token.isAuthenticated()) {
-        const user = API.Token.getUser();
+    if (typeof AuthService !== 'undefined' && AuthService.isAuthenticated()) {
+        const user = AuthService.getCurrentUser();
         currentUser = user ? user.name : null;
         userRole = user ? user.role : null;
         if (user) {
-            localStorage.setItem('currentUser', user.name);
-            localStorage.setItem('userRole', user.role);
-            localStorage.setItem('userEmail', user.email);
+            AuthService.setCurrentUser(user);
         }
     } else {
         currentUser = localStorage.getItem('currentUser');
@@ -1581,46 +1623,66 @@ function updateNavigation() {
     }
 }
 window.logout = function() {
-    if (typeof API !== 'undefined') {
-        API.Auth.logout();
+    if (typeof AuthService !== 'undefined') {
+        AuthService.logout();
     }
     localStorage.clear();
     currentUser = null;
     userRole = null;
     userFavorites = [];
+    if (typeof FavoriteService !== 'undefined') {
+        FavoriteService.clearCache();
+    }
     updateNavigation();
     showView('home');
     showToast('✅ Logged out successfully! See you soon!', 'success');
 };
 function setupLoginPage() {
-    console.log('🔧 Setting up Login page...');
     const loginForm = document.getElementById('loginForm');
     if (!loginForm) return;
     const newForm = loginForm.cloneNode(true);
     loginForm.parentNode.replaceChild(newForm, loginForm);
+    
+    if (typeof ValidationService !== 'undefined') {
+        ValidationService.setupRealTimeValidation(newForm, 'login');
+    }
+    
     newForm.onsubmit = async function(e) {
         e.preventDefault();
-        const email = newForm.querySelector('#email').value;
+        const email = newForm.querySelector('#email').value.trim();
         const password = newForm.querySelector('#password').value;
         const submitBtn = newForm.querySelector('button[type="submit"]');
-        if (!email || !password) {
-            showToast('❌ Please fill in all fields!', 'error');
-            return;
+        
+        if (typeof ValidationService !== 'undefined') {
+            ValidationService.clearFormErrors(newForm);
         }
+        
+        if (typeof ValidationService !== 'undefined') {
+            const validation = ValidationService.validateLogin(email, password);
+            if (!validation.isValid) {
+                ValidationService.showFormErrors(newForm, validation.errors);
+                const firstError = Object.values(validation.errors)[0];
+                showToast(`❌ ${firstError}`, 'error');
+                return;
+            }
+        } else {
+            if (!email || !password) {
+                showToast('❌ Please fill in all fields!', 'error');
+                return;
+            }
+        }
+        
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
         try {
-            if (typeof API !== 'undefined') {
-                const response = await API.Auth.login(email, password);
+            if (typeof AuthService !== 'undefined') {
+                const response = await AuthService.login(email, password);
                 if (response.user) {
                     currentUser = response.user.name;
                     userRole = response.user.role;
-                    localStorage.setItem('currentUser', response.user.name);
-                    localStorage.setItem('userRole', response.user.role);
-                    localStorage.setItem('userEmail', response.user.email);
                     try {
-                        userFavorites = await API.Favorites.getAll();
+                        userFavorites = await FavoriteService.getAll();
                     } catch (e) {
                         userFavorites = [];
                     }
@@ -1641,7 +1703,7 @@ function setupLoginPage() {
                 userRole = 'user';
                 checkAuth();
                 showToast(`✅ Welcome back, ${username}! (Demo Mode)`, 'success');
-                    showView('home');
+                showView('home');
             }
         } catch (error) {
             console.error('Login error:', error);
@@ -1651,55 +1713,88 @@ function setupLoginPage() {
             submitBtn.innerHTML = originalBtnText;
         }
     };
-    console.log('✅ Login page ready!');
 }
 function setupRegisterPage() {
-    console.log('🔧 Setting up Register page...');
     const registerForm = document.getElementById('registerForm');
     if (!registerForm) return;
     const newForm = registerForm.cloneNode(true);
     registerForm.parentNode.replaceChild(newForm, registerForm);
+    
+    if (typeof ValidationService !== 'undefined') {
+        ValidationService.setupRealTimeValidation(newForm, 'register');
+        
+        const confirmPasswordInput = newForm.querySelector('#confirmPassword');
+        const passwordInput = newForm.querySelector('#password');
+        if (confirmPasswordInput && passwordInput) {
+            confirmPasswordInput.addEventListener('blur', function() {
+                if (this.value && passwordInput.value && this.value !== passwordInput.value) {
+                    ValidationService.showFieldError(this, 'Passwords do not match.');
+                } else if (this.value && passwordInput.value) {
+                    ValidationService.showFieldValid(this);
+                }
+            });
+        }
+    }
+    
     newForm.onsubmit = async function(e) {
         e.preventDefault();
-        const name = newForm.querySelector('#name').value;
-        const email = newForm.querySelector('#email').value;
+        const name = newForm.querySelector('#name').value.trim();
+        const email = newForm.querySelector('#email').value.trim();
         const password = newForm.querySelector('#password').value;
         const confirmPassword = newForm.querySelector('#confirmPassword').value;
         const agreeTerms = newForm.querySelector('#agreeTerms').checked;
         const submitBtn = newForm.querySelector('button[type="submit"]');
-        if (!name || !email || !password || !confirmPassword) {
-            showToast('❌ Please fill in all fields!', 'error');
-            return;
+        
+        if (typeof ValidationService !== 'undefined') {
+            ValidationService.clearFormErrors(newForm);
         }
-        if (password !== confirmPassword) {
-            showToast('❌ Passwords do not match!', 'error');
-            return;
+        
+        if (typeof ValidationService !== 'undefined') {
+            const validation = ValidationService.validateRegister(name, email, password, confirmPassword);
+            if (!validation.isValid) {
+                ValidationService.showFormErrors(newForm, validation.errors);
+                const firstError = Object.values(validation.errors)[0];
+                showToast(`❌ ${firstError}`, 'error');
+                return;
+            }
+        } else {
+            if (!name || !email || !password || !confirmPassword) {
+                showToast('❌ Please fill in all fields!', 'error');
+                return;
+            }
+            if (password !== confirmPassword) {
+                showToast('❌ Passwords do not match!', 'error');
+                return;
+            }
+            if (password.length < 6) {
+                showToast('❌ Password must be at least 6 characters!', 'error');
+                return;
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                showToast('❌ Please enter a valid email address!', 'error');
+                return;
+            }
         }
-        if (password.length < 6) {
-            showToast('❌ Password must be at least 6 characters!', 'error');
-            return;
-        }
+        
         if (!agreeTerms) {
             showToast('❌ Please agree to Terms and Conditions!', 'error');
+            const termsCheckbox = newForm.querySelector('#agreeTerms');
+            if (termsCheckbox) {
+                termsCheckbox.parentElement.classList.add('text-danger');
+            }
             return;
         }
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            showToast('❌ Please enter a valid email address!', 'error');
-            return;
-        }
+        
         const originalBtnText = submitBtn.innerHTML;
         submitBtn.disabled = true;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating account...';
         try {
-            if (typeof API !== 'undefined') {
-                const response = await API.Auth.register(name, email, password);
+            if (typeof AuthService !== 'undefined') {
+                const response = await AuthService.register(name, email, password, confirmPassword);
                 if (response.user) {
                     currentUser = response.user.name;
                     userRole = response.user.role;
-                    localStorage.setItem('currentUser', response.user.name);
-                    localStorage.setItem('userRole', response.user.role);
-                    localStorage.setItem('userEmail', response.user.email);
                     checkAuth();
                     showToast(`✅ Welcome to CookMaster, ${response.user.name}! Your account has been created.`, 'success');
                     showView('home');
@@ -1722,7 +1817,6 @@ function setupRegisterPage() {
             submitBtn.innerHTML = originalBtnText;
         }
     };
-    console.log('✅ Register page ready!');
 }
 function showToast(message, type = 'info') {
     let toastContainer = document.getElementById('toast-container');
@@ -1749,11 +1843,17 @@ function capitalizeFirst(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 function getCategoryName(categoryId) {
+    if (typeof RecipeService !== 'undefined') {
+        return RecipeService.getCategoryName(categoryId);
+    }
     if (!categoryId) return 'Uncategorized';
     const category = allCategories.find(c => c.cat_id == categoryId);
     return category ? category.name : 'Uncategorized';
 }
 function getDefaultImage(categoryId) {
+    if (typeof RecipeService !== 'undefined') {
+        return RecipeService.getDefaultImage(categoryId);
+    }
     const images = {
         1: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400',
         2: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400',
@@ -1809,20 +1909,16 @@ function loadViewFromHash() {
     }
 }
 window.addEventListener('hashchange', function() {
-    console.log('🔄 Hash changed to:', window.location.hash);
     loadViewFromHash();
 });
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 CookMaster Starting...');
     await loadAllViews();
     checkAuth();
     loadViewFromHash();
-    if (typeof API !== 'undefined') {
+    if (typeof RecipeService !== 'undefined') {
         try {
-            allCategories = await API.Categories.getAll();
+            allCategories = await RecipeService.getCategories();
         } catch (e) {
-            console.log('Categories will load on demand');
         }
     }
-    console.log('✅ App Ready with full API integration!');
 });

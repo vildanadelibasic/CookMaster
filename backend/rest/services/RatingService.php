@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/BaseService.php';
-require_once __DIR__ . '/../dao/RatingDao.php';
+require_once __DIR__ . '/../dao/RatingDAO.php';
 class RatingService extends BaseService {
     public function __construct() {
         parent::__construct(new RatingDao());
@@ -43,4 +43,4 @@ class RatingService extends BaseService {
         return $this->dao->get_average_rating($recipe_id);
     }
 }
-?>
+

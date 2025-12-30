@@ -65,4 +65,4 @@ class FavoriteDao extends BaseDao {
         return $stmt->execute([':u' => $user_id, ':r' => $recipe_id]);
     }
 }
-?>
+

@@ -1,4 +1,5 @@
-const API_BASE_URL = 'http://localhost/CookMaster/backend';
+const API_BASE_URL = 'http://localhost/cookmaster/backend';
+
 const TokenService = {
     getToken() {
         return localStorage.getItem('jwt_token');
@@ -55,7 +56,19 @@ async function apiRequest(endpoint, options = {}) {
     }
     try {
         const response = await fetch(url, config);
-        const data = await response.json();
+        const text = await response.text();
+        
+        let data;
+        try {
+            data = JSON.parse(text);
+        } catch (parseError) {
+            throw {
+                status: response.status,
+                message: 'Invalid JSON response from server',
+                data: text
+            };
+        }
+        
         if (!response.ok) {
             throw {
                 status: response.status,
@@ -70,7 +83,7 @@ async function apiRequest(endpoint, options = {}) {
         }
         throw {
             status: 0,
-            message: 'Network error. Please check your connection.',
+            message: error.message || 'Network error. Please check your connection.',
             data: null
         };
     }
@@ -284,4 +297,3 @@ window.API = {
     Token: TokenService,
     BASE_URL: API_BASE_URL
 };
-console.log('✅ API Service loaded successfully');

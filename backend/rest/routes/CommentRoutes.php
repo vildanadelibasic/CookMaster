@@ -17,7 +17,11 @@ Flight::route('POST /comments', function() use ($commentService) {
         return;
     }
     $user = Flight::get('user');
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     if (empty($data['recipe_id']) || empty($data['content'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Recipe ID and content are required']);
@@ -52,7 +56,11 @@ Flight::route('PUT /comments/@id', function($id) use ($commentService) {
         Flight::halt(403, json_encode(['error' => 'Access denied. You can only edit your own comments.']));
         return;
     }
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     try {
         $result = $commentService->updateComment(
             $id, 

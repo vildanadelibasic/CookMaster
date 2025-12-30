@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . '/BaseService.php');
-require_once(__DIR__ . '/../dao/RecipeDao.php');
+require_once(__DIR__ . '/../dao/RecipeDAO.php');
 class RecipeService extends BaseService {
     private $recipeValidationRules = [
         'title' => ['required' => true, 'max' => 255],
@@ -42,4 +42,4 @@ class RecipeService extends BaseService {
         return $this->dao->get_popular($limit);
     }
 }
-?>
+

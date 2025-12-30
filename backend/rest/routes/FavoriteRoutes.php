@@ -47,7 +47,11 @@ Flight::route('POST /favorites', function() use ($favoriteService) {
         return;
     }
     $user = Flight::get('user');
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     if (empty($data['recipe_id'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Recipe ID is required']);

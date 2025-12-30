@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once __DIR__ . '/BaseDAO.php';
 class CommentDao extends BaseDao {
     public function __construct() {
         parent::__construct('comments', 'comment_id');
@@ -62,4 +62,4 @@ class CommentDao extends BaseDao {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
-?>
+

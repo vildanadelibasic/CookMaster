@@ -32,7 +32,11 @@ Flight::route('POST /users', function() use ($userService) {
     if (!AuthMiddleware::adminOnly()) {
         return;
     }
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     try {
         $result = $userService->createUser(
             $data['name'], 
@@ -51,7 +55,11 @@ Flight::route('PUT /users/@id', function($id) use ($userService) {
     if (!AuthMiddleware::adminOnly()) {
         return;
     }
-    $data = Flight::request()->data->getData();
+    $rawData = Flight::request()->getBody();
+    $data = json_decode($rawData, true);
+    if (!$data) {
+        $data = Flight::request()->data->getData();
+    }
     $currentUser = $userService->getUserById($id);
     if (!$currentUser) {
         http_response_code(404);

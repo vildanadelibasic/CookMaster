@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/BaseDao.php';
+require_once __DIR__ . '/BaseDAO.php';
 class RecipeDao extends BaseDao {
     public function __construct() {
         parent::__construct('recipes', 'recipe_id');
@@ -64,4 +64,4 @@ class RecipeDao extends BaseDao {
         return $this->delete($id);
     }
 }
-?>
+

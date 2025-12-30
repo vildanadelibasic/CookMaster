@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/BaseService.php';
-require_once __DIR__ . '/../dao/UserDao.php';
+require_once __DIR__ . '/../dao/UserDAO.php';
 class UserService extends BaseService {
    private $userValidationRules = [
        'name' => ['required' => true, 'max' => 100],
@@ -49,4 +49,4 @@ class UserService extends BaseService {
        return $user;
    }
 }
-?>
+

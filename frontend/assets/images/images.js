@@ -130,6 +130,3 @@ window.RecipeImages = {
     resize: resizeImage
 };
 
-console.log('✅ Recipe Images library loaded!');
-
-

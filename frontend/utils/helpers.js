@@ -12,4 +12,3 @@ function showNotification(message, type = 'info') {
     alert(message);
 }
 
-console.log('✅ Helpers loaded');
